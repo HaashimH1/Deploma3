@@ -3,8 +3,29 @@
 # Write your code to expect a terminal of 80 characters wide and 24 rows high
 
 from sheets import GoogleSheets
+from validator import Validator
 
 
-gsheet = GoogleSheets()
+# All global variables
+valid = None
+gsheet = None
 
-print(gsheet.get_data())
+
+def main():
+
+    print("setting up...")
+
+    global valid
+    global gsheet
+
+    valid = Validator()
+    gsheet = GoogleSheets()
+
+    print(gsheet.get_data())
+
+
+if __name__ == "__main__":
+    main()
+
+
+

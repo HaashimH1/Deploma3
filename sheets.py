@@ -2,7 +2,6 @@ import gspread
 from google.oauth2.service_account import Credentials
 
 # Global var for custom data to access google sheet as may be updated
-
 SPREADSHEET_NAME = "Deploma3"
 SHEET_NAME = "Profile"
 SCOPE = [
@@ -25,6 +24,7 @@ class GoogleSheets:
     
     # retrieves the data from the sheet
     def get_data(self):
+        print("getting data...")
         data = self.profiles.get_all_values()
         return data
 
