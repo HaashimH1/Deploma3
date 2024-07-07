@@ -23,11 +23,14 @@ def main():
     gsheet = GoogleSheets()
 
     print(gsheet.get_all_data())
+    gsheet.delete_row_at_id(3)
     
 
 
 if __name__ == "__main__":
     main()
+
+
 
 
 
