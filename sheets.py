@@ -23,10 +23,15 @@ class GoogleSheets:
 
     
     # retrieves the data from the sheet
-    def get_data(self):
-        print("getting data...")
+    def get_all_data(self):
+        print("getting all data...")
         data = self.profiles.get_all_values()
         return data
+
+
+    def add_new_row(self,data:tuple):
+        print("adding new data....")
+        self.profiles.append_row(data)
 
         
 

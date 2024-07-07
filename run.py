@@ -18,10 +18,12 @@ def main():
     global valid
     global gsheet
 
+# objects to access methods of repective classes
     valid = Validator()
     gsheet = GoogleSheets()
 
-    print(gsheet.get_data())
+    print(gsheet.get_all_data())
+    
 
 
 if __name__ == "__main__":
