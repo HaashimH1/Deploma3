@@ -37,25 +37,23 @@ def main():
 
 
 def add_new_profile():
-    firstname = get_user_input("First Name",valid.validate_name,FNAME_COLOUR)    
-    lastname = get_user_input("last Name",valid.validate_name,LNAME_COLOUR)   
+    #firstname = get_user_input("First Name",valid.validate_name,FNAME_COLOUR)    
+    #lastname = get_user_input("last Name",valid.validate_name,LNAME_COLOUR)   
+    #email = get_user_input("Email Address",valid.validate_email,EMAIL_COLOUR) 
+    #phone = get_user_input("Phone Number",valid.validate_phone,PHONE_COLOUR)
+    dob = get_user_input("Date of Birth",valid.validate_date,DOB_COLOUR) 
 
 
-    print(f"{firstname}|{lastname} have been added")
+    print("added")
 
 
 def get_user_input(field,validate_function,colour):
 
-    user_input = input(f"Please enter a {colour}{field}{RESET_COLOUR} >\n")
+    
     while True:
+        user_input = input(f"Please enter a {colour}{field}{RESET_COLOUR} >\n")
         if validate_function(user_input):
             return user_input
-        else:
-            user_input = input()
-
-
-       
-    
 
 
 
