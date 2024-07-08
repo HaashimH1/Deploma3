@@ -31,20 +31,31 @@ def main():
     gsheet = GoogleSheets()
     valid = Validator(ERROR_COLOUR,RESET_COLOUR)
 
+    print("getting all data")
     print_table(gsheet.get_all_data())
     add_new_profile()
 
 
-
 def add_new_profile():
-    #firstname = get_user_input("First Name",valid.validate_name,FNAME_COLOUR)    
-    #lastname = get_user_input("last Name",valid.validate_name,LNAME_COLOUR)   
-    #email = get_user_input("Email Address",valid.validate_email,EMAIL_COLOUR) 
-    #phone = get_user_input("Phone Number",valid.validate_phone,PHONE_COLOUR)
-    dob = get_user_input("Date of Birth",valid.validate_dob,DOB_COLOUR) 
+   
+    firstname = get_user_input("First Name",valid.validate_name,FNAME_COLOUR)
+    lastname = get_user_input("last Name",valid.validate_name,LNAME_COLOUR)  
+    email = get_user_input("Email Address",valid.validate_email,EMAIL_COLOUR)
+    phone = get_user_input("Phone Number",valid.validate_phone,PHONE_COLOUR)
+    dob = get_user_input("Date of Birth",valid.validate_dob,DOB_COLOUR)
+    member = get_user_input("Member (True or False)",valid.validate_member,MEMBER_COLOUR).upper()
+    enddate = ""
+    if(member == "TRUE"):
+        enddate = get_user_input("Member End Date",valid.validate_enddate,ENDDATE_COLOUR)
+    Id = len(gsheet.get_all_data())
 
+    new_row = [str(Id),firstname,lastname,email,str(phone),dob,member,enddate]
+    print("adding this new row...")
+    print_table([["ID","firstname","lastname","email","phone","dob","member","enddate"],new_row])
+    gsheet.add_new_row(new_row)
+    print("New Pofile succesfully added to database")
+    
 
-    print("added")
 
 
 def get_user_input(field,validate_function,colour):
