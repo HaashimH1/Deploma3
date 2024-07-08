@@ -48,8 +48,6 @@ def add_new_profile():
 
 
 def get_user_input(field,validate_function,colour):
-
-    
     while True:
         user_input = input(f"Please enter a {colour}{field}{RESET_COLOUR} >\n")
         if validate_function(user_input):

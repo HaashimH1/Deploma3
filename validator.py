@@ -20,6 +20,7 @@ class Validator:
             return True
 
 
+
     def validate_email(self,email):
         
         if re.match(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$', email):
@@ -28,6 +29,8 @@ class Validator:
             self.print_to_terminal("Email Address","follow valid structure")
             return False
 
+
+
     def validate_phone(self,phone):
 
         if not re.match(r'^447\d{9}$', phone):
@@ -35,6 +38,9 @@ class Validator:
             return False
         else:
             return True
+
+
+
 
     def validate_date(self,date):
         pass
