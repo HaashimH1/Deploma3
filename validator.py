@@ -79,9 +79,6 @@ class Validator:
 
 
 
-
-
-
     def validate_date(self,date):
         
         if not re.match(r'^[0-9]{2}/[0-9]{2}/[0-9]{4}$', date):

@@ -30,8 +30,7 @@ class GoogleSheets:
 
     def add_new_row(self,data:tuple):
         self.profiles.append_row(data)
-
-
+        
 
     def delete_row_at_id(self,id:int):
         print(f"deleting row at id: {id}")

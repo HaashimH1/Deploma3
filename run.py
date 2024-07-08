@@ -45,7 +45,7 @@ def add_new_profile():
     dob = get_user_input("Date of Birth",valid.validate_dob,DOB_COLOUR)
     member = get_user_input("Member (True or False)",valid.validate_member,MEMBER_COLOUR).upper()
     enddate = ""
-    if(member == "TRUE"):
+    if(member == "TRUE"):   # only enters member end date if person is a member
         enddate = get_user_input("Member End Date",valid.validate_enddate,ENDDATE_COLOUR)
     Id = len(gsheet.get_all_data())
 
