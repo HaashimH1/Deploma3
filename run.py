@@ -2,37 +2,60 @@
 # You can delete these comments, but do not change the name of this file
 # Write your code to expect a terminal of 80 characters wide and 24 rows high
 
+
+
 from sheets import GoogleSheets
 from validator import Validator
 
-
 # All global variables
-valid = None
 gsheet = None
-
+valid = None
 # Colour codes for printing to terminal
-BORDER_COLOUR = "\033[97m"
-ID_COLOUR = "\033[91m"
-FNAME_COLOUR = "\033[92m"
-LNAME_COLOUR = FNAME_COLOUR
-EMAIL_COLOUR = "\033[93m"
+BORDER_COLOUR = "\033[97m"    # white
+ID_COLOUR = "\033[91m"        # red
+FNAME_COLOUR = "\033[92m"     # green
+LNAME_COLOUR = FNAME_COLOUR   # green
+EMAIL_COLOUR = "\033[93m"     # orange
 PHONE_COLOUR = "\033[95m"
 DOB_COLOUR = "\033[94m"
 MEMBER_COLOUR = "\033[92m"
 ENDDATE_COLOUR = MEMBER_COLOUR
+RESET_COLOUR = "\033[0m"
+ERROR_COLOUR = ID_COLOUR
 
 def main():
 
     print("setting up...")
-
-    global valid
     global gsheet
-
-# objects to access methods of repective classes
-    valid = Validator()
+    global valid
     gsheet = GoogleSheets()
+    valid = Validator(ERROR_COLOUR,RESET_COLOUR)
 
     print_table(gsheet.get_all_data())
+    add_new_profile()
+
+
+
+def add_new_profile():
+    firstname = get_user_input("First Name",valid.validate_name,FNAME_COLOUR)    
+    lastname = get_user_input("last Name",valid.validate_name,LNAME_COLOUR)   
+
+
+    print(f"{firstname}|{lastname} have been added")
+
+
+def get_user_input(field,validate_function,colour):
+
+    user_input = input(f"Please enter a {colour}{field}{RESET_COLOUR} >\n")
+    while True:
+        if validate_function(user_input):
+            return user_input
+        else:
+            user_input = input()
+
+
+       
+    
 
 
 
@@ -53,14 +76,14 @@ def print_table(data):
     # Format each row and add it to the table
     for i, row in enumerate(data):
         table += f"{BORDER_COLOUR}│"
-        table += f"{ID_COLOUR}{row[0].upper():2}{BORDER_COLOUR}│"
-        table += f"{FNAME_COLOUR}{row[1].upper():<{max_firstname_len}}{BORDER_COLOUR}│"
+        table += f"{ID_COLOUR}{row[0].upper():>2}{BORDER_COLOUR}│"
+        table += f"{FNAME_COLOUR}{row[1].upper():>{max_firstname_len}}{BORDER_COLOUR}│"
         table += f"{LNAME_COLOUR}{row[2].upper():<{max_lastname_len}}{BORDER_COLOUR}│"
-        table += f"{EMAIL_COLOUR}{row[3].upper():<{max_email_len}}{BORDER_COLOUR}│"
-        table += f"{PHONE_COLOUR}{row[4].upper():12}{BORDER_COLOUR}│"
-        table += f"{DOB_COLOUR}{row[5].upper():10}{BORDER_COLOUR}│"
-        table += f"{MEMBER_COLOUR}{row[6].upper():6}{BORDER_COLOUR}│"
-        table += f"{ENDDATE_COLOUR}{row[7].upper():10}{BORDER_COLOUR}│"
+        table += f"{EMAIL_COLOUR}{row[3].upper():>{max_email_len}}{BORDER_COLOUR}│"
+        table += f"{PHONE_COLOUR}{row[4].upper():<12}{BORDER_COLOUR}│"
+        table += f"{DOB_COLOUR}{row[5].upper():<10}{BORDER_COLOUR}│"
+        table += f"{MEMBER_COLOUR}{row[6].upper():>6}{BORDER_COLOUR}│"
+        table += f"{ENDDATE_COLOUR}{row[7].upper():<10}{BORDER_COLOUR}│"
         table += "\n"
 
         # adds border below header row
