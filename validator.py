@@ -55,16 +55,6 @@ class Validator:
         else:
             return True
 
-    
-    def validate_gold(self,member):
-
-        if member.lower() != "false" and member.lower() != "true":
-            print(member)
-            self.print_to_terminal("Gold","be either 'True' or 'False'")
-            return False
-        else:
-            return True
-
 
 
     def validate_date(self,date):

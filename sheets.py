@@ -3,7 +3,8 @@ from google.oauth2.service_account import Credentials
 
 # Global var for custom data to access google sheet as may be updated
 SPREADSHEET_NAME = "Deploma3"
-SHEET_NAME = "Profile"
+SHEET_NAME1 = "Profile"
+SHEET_NAME2 = "History"
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
@@ -19,13 +20,19 @@ class GoogleSheets:
         self.SCOPED_CREDS = self.CREDS.with_scopes(SCOPE)
         self.GSPREAD_CLIENT = gspread.authorize(self.SCOPED_CREDS)
         self.SHEET = self.GSPREAD_CLIENT.open(SPREADSHEET_NAME)
-        self.profiles = self.SHEET.worksheet(SHEET_NAME)
+        self.profiles = self.SHEET.worksheet(SHEET_NAME1)
+        self.history = self.SHEET.worksheet(SHEET_NAME2)
+
 
     
     # retrieves the data from the sheet
-    def get_all_data(self):
+    def get_all_profile_data(self):
         data = self.profiles.get_all_values()
         return data
+        
+    def get_history_data(self,id):
+        data = self.history.get_all_values()
+        return data[id]
 
 
     def add_new_row(self,data:tuple):
