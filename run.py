@@ -19,7 +19,6 @@ EMAIL_COLOUR = "\033[93m"     # orange
 PHONE_COLOUR = "\033[95m"
 DOB_COLOUR = "\033[94m"
 MEMBER_COLOUR = "\033[92m"
-ENDDATE_COLOUR = MEMBER_COLOUR
 RESET_COLOUR = "\033[0m"
 ERROR_COLOUR = ID_COLOUR
 
@@ -44,14 +43,12 @@ def add_new_profile():
     phone = get_user_input("Phone Number",valid.validate_phone,PHONE_COLOUR)
     dob = get_user_input("Date of Birth",valid.validate_dob,DOB_COLOUR)
     member = get_user_input("Member (True or False)",valid.validate_member,MEMBER_COLOUR).upper()
-    enddate = ""
-    if(member == "TRUE"):   # only enters member end date if person is a member
-        enddate = get_user_input("Member End Date",valid.validate_enddate,ENDDATE_COLOUR)
+
     Id = len(gsheet.get_all_data())
 
-    new_row = [str(Id),firstname,lastname,email,str(phone),dob,member,enddate]
+    new_row = [str(Id),firstname,lastname,email,str(phone),dob,member]
     print("adding this new row...")
-    print_table([["ID","firstname","lastname","email","phone","dob","member","enddate"],new_row])
+    print_table([["ID","firstname","lastname","email","phone","dob","member"],new_row])
     gsheet.add_new_row(new_row)
     print("New Pofile succesfully added to database")
     
@@ -74,7 +71,7 @@ def print_table(data):
     max_email_len = max(len(row[3]) for row in data)
 
     # Calculate the total length for the border dashes
-    border_dashes_count = 49 + max_firstname_len + max_lastname_len + max_email_len 
+    border_dashes_count = 37 + max_firstname_len + max_lastname_len + max_email_len 
     dashes = BORDER_COLOUR+("━" * border_dashes_count)+"\n"
 
     # Create the table with the top border
@@ -89,8 +86,7 @@ def print_table(data):
         table += f"{EMAIL_COLOUR}{row[3].upper():>{max_email_len}}{BORDER_COLOUR}│"
         table += f"{PHONE_COLOUR}{row[4].upper():<12}{BORDER_COLOUR}│"
         table += f"{DOB_COLOUR}{row[5].upper():<10}{BORDER_COLOUR}│"
-        table += f"{MEMBER_COLOUR}{row[6].upper():>6}{BORDER_COLOUR}│"
-        table += f"{ENDDATE_COLOUR}{row[7].upper():<10}{BORDER_COLOUR}│"
+        table += f"{MEMBER_COLOUR}{row[6].upper():>5}{BORDER_COLOUR}│"
         table += "\n"
 
         # adds border below header row

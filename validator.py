@@ -40,18 +40,6 @@ class Validator:
         else:
             return True
 
-    def validate_enddate(self,enddate):
-
-        date_valid = self.validate_date(enddate)
-
-        if not date_valid==True:
-            self.print_to_terminal("Member End Date",date_valid)
-            return False
-        elif self.is_date_before_today(enddate):
-            self.print_to_terminal("Member End Date","be a date after today")
-            return False
-        else:
-            return True
             
 
     def validate_dob(self,dob):
