@@ -61,9 +61,14 @@ def get_user_input(field,validate_function,colour):
         if validate_function(user_input):
             return user_input
 
-def is_user_active():
+def is_user_active(Id):
     
-    return "FALSE"
+    users_enddate = gsheet.get_history_data(int(Id))[4]
+
+    if valid.is_date_before_today(users_enddate):
+        return "FALSE"
+    else:
+        return "TRUE"
 
 
 def print_history_table(data):
@@ -142,7 +147,7 @@ def print_profile_table(data):
         if i==0:
             table += f"{ID_COLOUR}ACTIVE{BORDER_COLOUR}│"
         else:
-            table += f"{ID_COLOUR}{is_user_active():<6}{BORDER_COLOUR}│"
+            table += f"{ID_COLOUR}{is_user_active(row[0]):<6}{BORDER_COLOUR}│"
         table += "\n"
 
         # adds border below header row
