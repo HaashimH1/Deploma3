@@ -18,7 +18,6 @@ LNAME_COLOUR = FNAME_COLOUR   # green
 EMAIL_COLOUR = "\033[93m"     # orange
 PHONE_COLOUR = "\033[95m"
 DOB_COLOUR = "\033[94m"
-ACTIVE_COLOUR = "\033[92m"
 RESET_COLOUR = "\033[0m"
 ERROR_COLOUR = ID_COLOUR
 
@@ -31,7 +30,7 @@ def main():
     valid = Validator(ERROR_COLOUR,RESET_COLOUR)
 
     print("getting all data")
-    #print_profile_table(gsheet.get_all_data())
+    print_profile_table(gsheet.get_all_profile_data())
     #add_new_profile()
 
     print_history_table(gsheet.get_history_data(1))
@@ -45,11 +44,10 @@ def add_new_profile():
     email = get_user_input("Email Address",valid.validate_email,EMAIL_COLOUR)
     phone = get_user_input("Phone Number",valid.validate_phone,PHONE_COLOUR)
     dob = get_user_input("Date of Birth",valid.validate_dob,DOB_COLOUR)
-    active = "FALSE"
 
     Id = len(gsheet.get_all_data())
 
-    new_row = [str(Id),firstname,lastname,email,str(phone),dob,active]
+    new_row = [str(Id),firstname,lastname,email,str(phone),dob]
     print("adding this new row...")
     print_profile_table([["id","fname","lname","email","phone","dob","active"],new_row])
     gsheet.add_new_row(new_row)
@@ -65,7 +63,8 @@ def get_user_input(field,validate_function,colour):
             return user_input
 
 def is_user_active():
-    pass
+    
+    return "FALSE"
 
 
 def print_history_table(data):
@@ -149,7 +148,10 @@ def print_profile_table(data):
         table += f"{EMAIL_COLOUR}{row[3].upper():>{max_email_len}}{BORDER_COLOUR}│"
         table += f"{PHONE_COLOUR}{row[4].upper():<12}{BORDER_COLOUR}│"
         table += f"{DOB_COLOUR}{row[5].upper():<10}{BORDER_COLOUR}│"
-        table += f"{ACTIVE_COLOUR}{row[6].upper():<6}{BORDER_COLOUR}│"
+        if i==0:
+            table += f"{ID_COLOUR}ACTIVE{BORDER_COLOUR}│"
+        else:
+            table += f"{ID_COLOUR}{is_user_active():<6}{BORDER_COLOUR}│"
         table += "\n"
 
         # adds border below header row
