@@ -42,13 +42,13 @@ def add_new_profile():
     email = get_user_input("Email Address",valid.validate_email,EMAIL_COLOUR)
     phone = get_user_input("Phone Number",valid.validate_phone,PHONE_COLOUR)
     dob = get_user_input("Date of Birth",valid.validate_dob,DOB_COLOUR)
-    member = get_user_input("Member (True or False)",valid.validate_member,MEMBER_COLOUR).upper()
+    member = get_user_input("Gold (True or False)",valid.validate_gold,MEMBER_COLOUR).upper()
 
     Id = len(gsheet.get_all_data())
 
     new_row = [str(Id),firstname,lastname,email,str(phone),dob,member]
     print("adding this new row...")
-    print_table([["ID","firstname","lastname","email","phone","dob","member"],new_row])
+    print_table([["ID","firstname","lastname","email","phone","dob","gold"],new_row])
     gsheet.add_new_row(new_row)
     print("New Pofile succesfully added to database")
     
