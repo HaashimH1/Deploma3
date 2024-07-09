@@ -95,6 +95,13 @@ class Validator:
         else:
             return False   # date given is after todays date
 
+    def get_todays_date(self):
+
+        today = datetime.today()
+        uk_format_date = today.strftime("%d/%m/%Y")
+    
+        return uk_format_date
+
         
 
     def print_to_terminal(self,field,error_message):

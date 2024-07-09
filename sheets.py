@@ -35,13 +35,19 @@ class GoogleSheets:
         return data[id]
 
 
-    def add_new_row(self,data:tuple):
+    def add_new_profile(self,data:tuple,Id,date):
         self.profiles.append_row(data)
+        self.add_new_profiles_history_data(Id,date)
+
+    def add_new_profiles_history_data(self,Id,date):
+        data = [Id,date,"","",date]
+        self.history.append_row(data)
         
 
     def delete_row_at_id(self,id:int):
         print(f"deleting row at id: {id}")
         self.profiles.delete_rows(id+1)    # id + 1 because 1st row is category headers
+        self.history.delete_rows(id+1) 
         self.reasign_ids()
 
 
@@ -49,6 +55,8 @@ class GoogleSheets:
          print("reassigning IDs...")
          for i in range(1, len(self.profiles.get_all_values())):
              self.profiles.update_cell(i + 1, 1, i)
+             self.history.update_cell(i + 1, 1, i)
+         
         
         
 

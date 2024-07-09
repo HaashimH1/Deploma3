@@ -31,13 +31,12 @@ def main():
 
     print("getting all data")
     print_profile_table(gsheet.get_all_profile_data())
-    #add_new_profile()
-
-    print_history_table(gsheet.get_history_data(1))
-
+    #add_new_customer()
+    #print_history_table(gsheet.get_history_data(1))
 
 
-def add_new_profile():
+
+def add_new_customer():
    
     firstname = get_user_input("First Name",valid.validate_name,FNAME_COLOUR)
     lastname = get_user_input("last Name",valid.validate_name,LNAME_COLOUR)  
@@ -45,12 +44,12 @@ def add_new_profile():
     phone = get_user_input("Phone Number",valid.validate_phone,PHONE_COLOUR)
     dob = get_user_input("Date of Birth",valid.validate_dob,DOB_COLOUR)
 
-    Id = len(gsheet.get_all_data())
+    Id = len(gsheet.get_all_profile_data())
 
     new_row = [str(Id),firstname,lastname,email,str(phone),dob]
     print("adding this new row...")
     print_profile_table([["id","fname","lname","email","phone","dob","active"],new_row])
-    gsheet.add_new_row(new_row)
+    gsheet.add_new_profile(new_row,Id,valid.get_todays_date())
     print("New Pofile succesfully added to database")
     
 
@@ -116,14 +115,6 @@ def print_history_table(data):
 
     print(table)
     
-    
-   
-
-
-
-
-    #print(table)
-
 
 def print_profile_table(data):
 
