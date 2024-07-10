@@ -7,7 +7,22 @@ class Validator:
     def __init__(self,ERROR_COLOUR,RESET_COLOUR):
         self.ERROR_COLOUR = ERROR_COLOUR
         self.RESET_COLOUR = RESET_COLOUR
-        
+
+    def validate_menu_option(self,option):
+
+        try:
+            if int(option) in [1,2,3,4,5]:
+                return True
+            else:
+                self.print_to_terminal("Option","be 1,2,3,4,5")
+                return False
+        except:
+            self.print_to_terminal("Option","be a number 1-5")
+            return False
+            
+
+
+
 
     def validate_name(self,name):
 

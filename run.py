@@ -3,23 +3,30 @@
 # Write your code to expect a terminal of 80 characters wide and 24 rows high
 
 
-
 from sheets import GoogleSheets
 from validator import Validator
+import os
 
 # All global variables
 gsheet = None
 valid = None
 # Colour codes for printing to terminal
-BORDER_COLOUR = "\033[97m"    # white
-ID_COLOUR = "\033[91m"        # red
-FNAME_COLOUR = "\033[92m"     # green
-LNAME_COLOUR = FNAME_COLOUR   # green
-EMAIL_COLOUR = "\033[93m"     # orange
-PHONE_COLOUR = "\033[95m"
-DOB_COLOUR = "\033[94m"
+
+RED = "\033[91m"
+GREEN = "\033[92m"
+YELLOW = "\033[93m"
+BLUE = "\033[94m"
+PURPLE = "\033[95m"
+WHITE = "\033[97m"
 RESET_COLOUR = "\033[0m"
-ERROR_COLOUR = ID_COLOUR
+
+BORDER_COLOUR = WHITE
+ID_COLOUR = RED
+FNAME_COLOUR = GREEN
+LNAME_COLOUR = GREEN
+EMAIL_COLOUR = YELLOW
+PHONE_COLOUR = PURPLE
+DOB_COLOUR = BLUE
 
 def main():
 
@@ -27,12 +34,37 @@ def main():
     global gsheet
     global valid
     gsheet = GoogleSheets()
-    valid = Validator(ERROR_COLOUR,RESET_COLOUR)
+    valid = Validator(RED,RESET_COLOUR)
 
-    print("getting all data")
-    print_profile_table(gsheet.get_all_profile_data())
-    #add_new_customer()
-    #print_history_table(gsheet.get_history_data(1))
+    main_menu()
+
+    
+
+
+def main_menu():
+    
+    print(f"\n\n          {YELLOW}Main Menu\n      {GREEN}Choose an Option:\n")
+    print(f"     {BLUE}1 {WHITE}--> See all Data\n")
+    print(f"     {BLUE}2 {WHITE}--> Create a Profile\n")
+    print(f"     {BLUE}3 {WHITE}--> Search for a profile\n")
+    print(f"     {BLUE}4 {WHITE}--> Log a Visit\n")
+    print(f"     {BLUE}5 {WHITE}--> Make a Payment\n")
+    
+    option = get_user_input("Option",valid.validate_menu_option,BLUE)
+    option = int(option)
+
+    if option == 1:
+        clear_terminal()
+        print("Getting all Profiles....")
+        print_profile_table(gsheet.get_all_profile_data())
+    elif option == 2:
+        pass
+    elif option == 3:
+        pass
+    elif option == 4:
+        pass
+    elif option == 5:
+        pass
 
 
 
@@ -57,7 +89,7 @@ def add_new_customer():
 
 def get_user_input(field,validate_function,colour):
     while True:
-        user_input = input(f"{BORDER_COLOUR}Please enter a {colour}{field}{RESET_COLOUR} >\n")
+        user_input = input(f"{WHITE}Please enter a {colour}{field}{RESET_COLOUR} > \n")
         if validate_function(user_input):
             return user_input
 
@@ -78,10 +110,10 @@ def print_history_table(data):
 
     table += "│"
     table += f"{ID_COLOUR}ID{BORDER_COLOUR}│"
-    table += f"{FNAME_COLOUR}SIGNUPDATE{BORDER_COLOUR}│"
-    table += f"{EMAIL_COLOUR}    PAYMENTS     {BORDER_COLOUR}│"
-    table += f"{PHONE_COLOUR}  VISITS  {BORDER_COLOUR}│"
-    table += f"{DOB_COLOUR}  ENDATE  {BORDER_COLOUR}│"
+    table += f"{GREEN}SIGNUPDATE{BORDER_COLOUR}│"
+    table += f"{YELLOW}    PAYMENTS     {BORDER_COLOUR}│"
+    table += f"{PURPLE}  VISITS  {BORDER_COLOUR}│"
+    table += f"{BLUE}  ENDATE  {BORDER_COLOUR}│"
     table += "\n"
     table += dashes
 
@@ -97,20 +129,20 @@ def print_history_table(data):
         
         if i == 0:
             table += f"{ID_COLOUR}{data[0]:>2}{BORDER_COLOUR}│"
-            table += f"{FNAME_COLOUR}{data[1]}{BORDER_COLOUR}│"
-            table += f"{EMAIL_COLOUR}{payments[0]:>17}{BORDER_COLOUR}│"
-            table += f"{PHONE_COLOUR}{visits[0]:10}{BORDER_COLOUR}│"
-            table += f"{DOB_COLOUR}{data[4]}{BORDER_COLOUR}│"
+            table += f"{GREEN}{data[1]}{BORDER_COLOUR}│"
+            table += f"{YELLOW}{payments[0]:>17}{BORDER_COLOUR}│"
+            table += f"{PURPLE}{visits[0]:10}{BORDER_COLOUR}│"
+            table += f"{BLUE}{data[4]}{BORDER_COLOUR}│"
             table += "\n"
         else:
             table += space*2 + "│"
             table += space*10 + "│"
             try:
-                table += f"{EMAIL_COLOUR}{payments[i]:>17}{BORDER_COLOUR}│"
+                table += f"{YELLOW}{payments[i]:>17}{BORDER_COLOUR}│"
             except:
                 table += space*17 + "│"  # no payments for this row
             try:
-                table += f"{PHONE_COLOUR}{visits[i]:10}{BORDER_COLOUR}│"
+                table += f"{BLUE}{visits[i]:10}{BORDER_COLOUR}│"
             except:
                 table += space*10 + "│"  # no visits for this row
             table += space*10 + "│"
@@ -158,6 +190,16 @@ def print_profile_table(data):
     table += dashes
     print(table)
             
+
+def clear_terminal():
+    """
+    Clears the terminal screen.
+    """
+    # Check the OS and send the appropriate command
+    if os.name == 'nt':  # For Windows
+        os.system('cls')
+    else:  # For Linux and Mac
+        os.system('clear')
 
 
 if __name__ == "__main__":
