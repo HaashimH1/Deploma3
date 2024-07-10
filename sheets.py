@@ -33,6 +33,10 @@ class GoogleSheets:
     def get_history_data(self,id):
         data = self.history.get_all_values()
         return data[id]
+    
+    def get_enddates(self):
+        data = self.history.col_values(5)
+        return data
 
 
     def add_new_profile(self,data:tuple,Id,date):

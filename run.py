@@ -36,6 +36,7 @@ def main():
     gsheet = GoogleSheets()
     valid = Validator(RED,RESET_COLOUR)
 
+  
     main_menu()
 
     
@@ -43,22 +44,26 @@ def main():
 
 def main_menu():
     
+    clear_terminal()
     print(f"\n\n          {YELLOW}Main Menu\n      {GREEN}Choose an Option:\n")
     print(f"     {BLUE}1 {WHITE}--> See all Data\n")
     print(f"     {BLUE}2 {WHITE}--> Create a Profile\n")
     print(f"     {BLUE}3 {WHITE}--> Search for a profile\n")
     print(f"     {BLUE}4 {WHITE}--> Log a Visit\n")
     print(f"     {BLUE}5 {WHITE}--> Make a Payment\n")
+
     
     option = get_user_input("Option",valid.validate_menu_option,BLUE)
     option = int(option)
 
     if option == 1:
         clear_terminal()
-        print("Getting all Profiles....")
+        print(f"\n\n                   {GREEN}Getting all Profiles....\n")
         print_profile_table(gsheet.get_all_profile_data())
+        #option = get_user_input("")
     elif option == 2:
-        pass
+        clear_terminal()
+        add_new_customer()
     elif option == 3:
         pass
     elif option == 4:
@@ -79,10 +84,10 @@ def add_new_customer():
     Id = len(gsheet.get_all_profile_data())
 
     new_row = [str(Id),firstname,lastname,email,str(phone),dob]
-    print("adding this new row...")
+    clear_terminal()
     print_profile_table([["id","fname","lname","email","phone","dob","active"],new_row])
     gsheet.add_new_profile(new_row,Id,valid.get_todays_date())
-    print("New Pofile succesfully added to database")
+    print(f"\n{GREEN}         New Pofile succesfully added to database")
     
 
 
@@ -90,14 +95,12 @@ def add_new_customer():
 def get_user_input(field,validate_function,colour):
     while True:
         user_input = input(f"{WHITE}Please enter a {colour}{field}{RESET_COLOUR} > \n")
-        if validate_function(user_input):
+        if validate_function(user_input,field):
             return user_input
 
-def is_user_active(Id):
+def is_user_active(date):
     
-    users_enddate = gsheet.get_history_data(int(Id))[4]
-
-    if valid.is_date_before_today(users_enddate):
+    if valid.is_date_before_today(date):
         return "FALSE"
     else:
         return "TRUE"
@@ -155,6 +158,7 @@ def print_history_table(data):
 
 def print_profile_table(data):
 
+
     # Calculate the maximum length for firstname, lastname, and email columns
     max_firstname_len = max(len(row[1]) for row in data)
     max_lastname_len = max(len(row[2]) for row in data)
@@ -166,6 +170,9 @@ def print_profile_table(data):
 
     # Create the table with the top border
     table = dashes
+
+    # retrieves all enddates from history table instead of doing 
+    enddates = gsheet.get_enddates()
 
     # Format each row and add it to the table
     for i, row in enumerate(data):
@@ -179,7 +186,7 @@ def print_profile_table(data):
         if i==0:
             table += f"{ID_COLOUR}ACTIVE{BORDER_COLOUR}│"
         else:
-            table += f"{ID_COLOUR}{is_user_active(row[0]):<6}{BORDER_COLOUR}│"
+            table += f"{ID_COLOUR}{is_user_active(enddates[i]):<6}{BORDER_COLOUR}│"
         table += "\n"
 
         # adds border below header row
