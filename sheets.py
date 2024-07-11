@@ -37,6 +37,10 @@ class GoogleSheets:
     def get_enddates(self):
         data = self.history.col_values(5)
         return data
+        
+    def get_IDs(self):
+        data = self.profiles.col_values(1)
+        return data
 
 
     def add_new_profile(self,data:tuple,Id,date):

@@ -53,17 +53,13 @@ def main_menu():
     print(f"     {BLUE}5 {WHITE}--> Make a Payment\n")
 
     
-    option = get_user_input("Option",valid.validate_menu_option,BLUE)
+    option = get_user_input("Option",valid.validate_option_type_menu,BLUE)
     option = int(option)
 
     if option == 1:
-        clear_terminal()
-        print(f"\n\n                   {GREEN}Getting all Profiles....\n")
-        print_profile_table(gsheet.get_all_profile_data())
-        #option = get_user_input("")
+        see_all_data()
     elif option == 2:
-        clear_terminal()
-        add_new_customer()
+        create_a_profile()
     elif option == 3:
         pass
     elif option == 4:
@@ -71,7 +67,34 @@ def main_menu():
     elif option == 5:
         pass
 
+def see_all_data():
 
+    clear_terminal()
+    print(f"\n\n                   {GREEN}Getting all Profiles....\n")
+    print_profile_table(gsheet.get_all_profile_data())
+    print(f"{WHITE}To show the history of a customer:\n")
+    Id = get_user_input_id()
+    clear_terminal()
+    print_history_table(gsheet.get_history_data(int(Id)))
+    
+def create_a_profile():
+
+    add_new_customer()
+
+def get_user_input_id():
+    while True:
+        Id = get_user_input("ID",valid.is_integer,ID_COLOUR)
+        if does_id_exist(Id):
+            return Id
+        else:
+            print(f"\n{WHITE}The ID: {ID_COLOUR}{Id}{WHITE} does not exist\n")
+
+def does_id_exist(input_Id):
+    IDs = gsheet.get_IDs()
+    for ID in IDs[1:]:
+        if ID == input_Id:
+            return True
+    return False
 
 def add_new_customer():
    
@@ -94,9 +117,13 @@ def add_new_customer():
 
 def get_user_input(field,validate_function,colour):
     while True:
-        user_input = input(f"{WHITE}Please enter a {colour}{field}{RESET_COLOUR} > \n")
-        if validate_function(user_input,field):
+        user_input = input(f"{WHITE}Please enter a {colour}{field}{WHITE}, or type '{BLUE}menu{WHITE}' to go back to main menu >{RESET_COLOUR} \n")
+        if user_input.lower() == "menu":
+            main_menu()
+        elif validate_function(user_input,field):
             return user_input
+        
+            
 
 def is_user_active(date):
     

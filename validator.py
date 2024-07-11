@@ -8,8 +8,16 @@ class Validator:
         self.ERROR_COLOUR = ERROR_COLOUR
         self.RESET_COLOUR = RESET_COLOUR
 
-    def validate_menu_option(self,option,field):
+    def is_integer(self,number,field):
+        try:
+            int(number)
+        except:
+            self.print_to_terminal(field,"be a number")
+            return False
+        else:
+            return True
 
+    def validate_option_type_menu(self,option,field):
         try:
             if int(option) in [1,2,3,4,5]:
                 return True
@@ -19,13 +27,11 @@ class Validator:
         except:
             self.print_to_terminal(field,"be a number 1-5")
             return False
-            
 
 
 
 
     def validate_name(self,name,field):
-
         if len(name) < 2:
             self.print_to_terminal(field,"be at least 2 characters")
             return False
