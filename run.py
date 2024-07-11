@@ -228,7 +228,7 @@ def print_profile_table(data):
     table = dashes
 
     # retrieves all enddates from history table instead of doing 
-    enddates = gsheet.get_enddates()
+    enddates = get_enddates(data)
 
     # Format each row and add it to the table
     for i, row in enumerate(data):
@@ -253,6 +253,15 @@ def print_profile_table(data):
     table += dashes
     print(table)
             
+def get_enddates(data):
+    
+    all_enddates = gsheet.get_enddates()
+    enddates = [all_enddates[0]]  # adds the header
+
+    for profile in data[1:]:
+        enddates.append(all_enddates[int(profile[0])])
+
+    return enddates
 
 
 
