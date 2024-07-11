@@ -75,29 +75,13 @@ def see_all_data():
     Id = get_user_input_id()
     print(f"{GREEN}           Getting {ID_COLOUR}{Id}{GREEN}'s history data....")
     print_history_table(gsheet.get_history_data(int(Id)))
+
+
     
 def create_a_profile():
 
     clear_terminal()
-    add_new_customer()
-
-def get_user_input_id():
-    while True:
-        Id = get_user_input("ID",valid.is_integer,ID_COLOUR)
-        if does_id_exist(Id):
-            return Id
-        else:
-            print(f"{WHITE}The ID: {ID_COLOUR}{Id}{WHITE} does not exist")
-
-def does_id_exist(input_Id):
-    IDs = gsheet.get_IDs()
-    for ID in IDs[1:]:
-        if ID == input_Id:
-            return True
-    return False
-
-def add_new_customer():
-   
+    
     firstname = get_user_input("First Name",valid.validate_name,FNAME_COLOUR)
     lastname = get_user_input("last Name",valid.validate_name,LNAME_COLOUR)  
     email = get_user_input("Email Address",valid.validate_email,EMAIL_COLOUR)
@@ -107,11 +91,29 @@ def add_new_customer():
     Id = len(gsheet.get_all_profile_data())
 
     new_row = [str(Id),firstname,lastname,email,str(phone),dob]
-    clear_terminal()
-    print_profile_table([["id","fname","lname","email","phone","dob","active"],new_row])
+    print_preview_new_profile(new_row)
     gsheet.add_new_profile(new_row,Id,valid.get_todays_date())
     print(f"\n{GREEN}         New Pofile succesfully added to database")
-    
+
+
+
+def get_user_input_id():
+    while True:
+        Id = get_user_input("ID",valid.is_integer,ID_COLOUR)
+        if does_id_exist(Id):
+            return Id
+        else:
+            print(f"{WHITE}The ID: {ID_COLOUR}{Id}{WHITE} does not exist")
+
+
+
+
+def does_id_exist(input_Id):
+    IDs = gsheet.get_IDs()
+    for ID in IDs[1:]:
+        if ID == input_Id:
+            return True
+    return False
 
 
 
@@ -123,7 +125,7 @@ def get_user_input(field,validate_function,colour):
         elif validate_function(user_input,field):
             return user_input
         
-            
+
 
 def is_user_active(date):
     
@@ -131,6 +133,8 @@ def is_user_active(date):
         return "FALSE"
     else:
         return "TRUE"
+
+
 
 
 def print_history_table(data):
@@ -183,8 +187,10 @@ def print_history_table(data):
     print(table)
     
 
-def print_profile_table(data):
 
+
+
+def print_profile_table(data):
 
     # Calculate the maximum length for firstname, lastname, and email columns
     max_firstname_len = max(len(row[1]) for row in data)
@@ -225,6 +231,23 @@ def print_profile_table(data):
     print(table)
             
 
+
+
+def print_preview_new_profile(data):
+
+    table = "│"
+    table += f"{ID_COLOUR}{data[0]}{BORDER_COLOUR}│"
+    table += f"{FNAME_COLOUR}{data[1]}{BORDER_COLOUR}│"
+    table += f"{LNAME_COLOUR}{data[2]}{BORDER_COLOUR}│"
+    table += f"{EMAIL_COLOUR}{data[3]}{BORDER_COLOUR}│"
+    table += f"{PHONE_COLOUR}{data[4]}{BORDER_COLOUR}│"
+    table += f"{DOB_COLOUR}{data[5]}{BORDER_COLOUR}│"
+
+    print(f"\n{table}")
+
+
+
+
 def clear_terminal():
     """
     Clears the terminal screen.
@@ -234,6 +257,7 @@ def clear_terminal():
         os.system('cls')
     else:  # For Linux and Mac
         os.system('clear')
+
 
 
 if __name__ == "__main__":
