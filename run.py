@@ -51,7 +51,6 @@ def main_menu():
     print(f"     {BLUE}3 {WHITE}--> Search for a profile\n")
     print(f"     {BLUE}4 {WHITE}--> Log a Visit\n")
     print(f"     {BLUE}5 {WHITE}--> Make a Payment\n")
-
     
     option = get_user_input("Option",valid.validate_option_type_menu,BLUE)
     option = int(option)
@@ -74,11 +73,12 @@ def see_all_data():
     print_profile_table(gsheet.get_all_profile_data())
     print(f"{WHITE}To show the history of a customer:\n")
     Id = get_user_input_id()
-    clear_terminal()
+    print(f"{GREEN}           Getting {ID_COLOUR}{Id}{GREEN}'s history data....")
     print_history_table(gsheet.get_history_data(int(Id)))
     
 def create_a_profile():
 
+    clear_terminal()
     add_new_customer()
 
 def get_user_input_id():
@@ -87,7 +87,7 @@ def get_user_input_id():
         if does_id_exist(Id):
             return Id
         else:
-            print(f"\n{WHITE}The ID: {ID_COLOUR}{Id}{WHITE} does not exist\n")
+            print(f"{WHITE}The ID: {ID_COLOUR}{Id}{WHITE} does not exist")
 
 def does_id_exist(input_Id):
     IDs = gsheet.get_IDs()
@@ -172,7 +172,7 @@ def print_history_table(data):
             except:
                 table += space*17 + "│"  # no payments for this row
             try:
-                table += f"{BLUE}{visits[i]:10}{BORDER_COLOUR}│"
+                table += f"{PURPLE}{visits[i]:10}{BORDER_COLOUR}│"
             except:
                 table += space*10 + "│"  # no visits for this row
             table += space*10 + "│"
