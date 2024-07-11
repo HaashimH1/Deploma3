@@ -60,7 +60,7 @@ def main_menu():
     elif option == 2:
         create_a_profile()
     elif option == 3:
-        pass
+        search_for_a_profile()
     elif option == 4:
         pass
     elif option == 5:
@@ -94,6 +94,29 @@ def create_a_profile():
     print_preview_new_profile(new_row)
     gsheet.add_new_profile(new_row,Id,valid.get_todays_date())
     print(f"\n{GREEN}         New Pofile succesfully added to database")
+
+def search_for_a_profile():
+
+    clear_terminal()
+    search_field = input(f"{WHITE}Enter a {BLUE}search field{WHITE} >\n")
+    print(f"{GREEN} Searching for '{BLUE}{search_field}{GREEN}' ....")
+
+    matching_profiles = get_profiles_by_search(str(search_field))
+    print_profile_table(matching_profiles)
+
+def get_profiles_by_search(search_field):
+
+    all_profiles = gsheet.get_all_profile_data()
+    matching_profiles = [all_profiles[0]] # asigns the headers
+
+    for row in all_profiles[1:]:
+        for item in row:
+            if search_field in item:
+                matching_profiles.append(row)
+                break  # no need to search through this row if search criteria is found
+
+    return matching_profiles
+
 
 
 
