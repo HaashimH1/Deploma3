@@ -64,7 +64,15 @@ class GoogleSheets:
          for i in range(1, len(self.profiles.get_all_values())):
              self.profiles.update_cell(i + 1, 1, i)
              self.history.update_cell(i + 1, 1, i)
-         
+
+    def add_visit(self,date,Id,visits_data):
+        if visits_data == "":
+            visits_data += date + "|"  # first entry to visits cell
+        else:
+            visits_data += "|" + date
+        self.history.update_cell(Id + 1,4,visits_data)  # id + 1 because 1st row is category headers
+
+
         
         
 

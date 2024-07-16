@@ -111,17 +111,32 @@ def log_a_visit():
     
     clear_terminal()
     print(f"{WHITE}To select the customer:\n")
-    Id = get_user_input_id()
+    Id = int(get_user_input_id())
+    data = gsheet.get_history_data(Id)
 
-    data = gsheet.get_history_data(int(Id))
-
-    if is_user_active(data[4]):
-        add_users_visit(Id)
+    if not is_user_active(data[4]):
+        print(f"{RED}User is not subscribed{RESET_COLOUR}")
+    elif check_user_logged_today(data[3]):
+        print(f"{RED}User has already logged today{RESET_COLOUR}")
     else:
-        print(f"{RED} User is not subscribed{RESET_COLOUR}")
+        gsheet.add_visit(valid.get_todays_date(),Id,data[3])
+        print(f"{GREEN}Logged Users Visit{RESET_COLOUR}")
+        return_to_main_menu_prompt()
+
+
+        
     
-def add_users_visit(Id):
-    pass
+def check_user_logged_today(all_visits):
+
+    each_visit = all_visits.split("|")
+    for date in each_visit:
+        if valid.get_todays_date() == date:
+            return True
+    return False
+
+
+    
+
 
 def get_profiles_by_search(search_field):
 
