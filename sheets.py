@@ -66,18 +66,12 @@ class GoogleSheets:
              self.history.update_cell(i + 1, 1, i)
 
     def add_visit(self,date,Id,visits_data):
-        if visits_data == "":
-            visits_data += date + "|"  # first entry to visits cell
-        else:
-            visits_data += "|" + date
+        visits_data += f"{date}|"
         self.history.update_cell(Id + 1,4,visits_data)  # id + 1 because 1st row is category headers
 
     
     def add_payment(self,payment_amount,today_date,enddate,Id,payments_data):
-        if payments_data == "":
-            payments_data += f"{payment_amount},{today_date}|"
-        else:
-            payments_data += f"|{payment_amount},{today_date}"
+        payments_data += f"{payment_amount},{today_date}|"
         self.history.update_cell(Id + 1,3,payments_data)
         self.history.update_cell(Id + 1,5,enddate)
         

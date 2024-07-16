@@ -37,21 +37,17 @@ PAYMENT_AMOUNT_12MONTH = 249.99
 
 
 def main():
-
-    print("setting up...")
+    print(f"{GREEN}    Setting up...")
     global gsheet
     global valid
     gsheet = GoogleSheets()
     valid = Validator(RED,RESET_COLOUR)
 
-  
     main_menu()
 
     
-
-
 def main_menu():
-    
+   
     clear_terminal()
     print(f"\n\n          {YELLOW}Main Menu\n      {GREEN}Choose an Option:\n")
     print(f"     {BLUE}1 {WHITE}--> See all Data\n")
@@ -75,7 +71,7 @@ def main_menu():
         make_a_payment()
 
 def see_all_data():
-
+   
     clear_terminal()
     print(f"\n\n                   {GREEN}Getting all Profiles....\n")
     print_profile_table(gsheet.get_all_profile_data())
@@ -90,7 +86,6 @@ def see_all_data():
 def create_a_profile():
 
     clear_terminal()
-    
     firstname = get_user_input("First Name",valid.validate_name,FNAME_COLOUR)
     lastname = get_user_input("last Name",valid.validate_name,LNAME_COLOUR)  
     email = get_user_input("Email Address",valid.validate_email,EMAIL_COLOUR)
@@ -100,12 +95,18 @@ def create_a_profile():
     Id = len(gsheet.get_all_profile_data())
 
     new_row = [str(Id),firstname,lastname,email,str(phone),dob]
-    print_preview_new_profile(new_row)
+    print_preview_profile(new_row)
     gsheet.add_new_profile(new_row,Id,valid.get_todays_date())
     print(f"\n{GREEN}         New Pofile succesfully added to database")
 
 def edit_a_profile():
-    pass
+    
+    clear_terminal()
+    search_for_a_profile()
+    Id = int(get_user_input_id())
+    data = gsheet.get_all_profile_data()[Id]
+
+    print_preview_profile(data)
 
 def log_a_visit():
 
@@ -129,6 +130,7 @@ def make_a_payment():
     clear_terminal()
     search_for_a_profile()
     Id = int(get_user_input_id())
+    data = gsheet.get_history_data(Id)
 
     print(f"{WHITE}Now choose how many months to add (example: 3) >")
     print(f"                {YELLOW}1{WHITE} Month -> £{PAYMENT_AMOUNT_1MONTH}")
@@ -152,7 +154,7 @@ def make_a_payment():
     elif months == 12:
         payment_amount = PAYMENT_AMOUNT_12MONTH
     
-    data = gsheet.get_history_data(Id)
+    
     
     old_enddate = data[4]
     new_enddate = calculate_new_enddate(old_enddate,months)
@@ -196,6 +198,11 @@ def add_months_onto_date(date,months_to_add):
     if month > 12:
         month -= 12
         year += 1
+
+    if day < 10:
+        day = f"0{day}"
+    if month < 10:
+        month = f"0{month}"
     
     return f"{day}/{month}/{year}"
 
@@ -386,7 +393,7 @@ def get_enddates(data):
 
 
 
-def print_preview_new_profile(data):
+def print_preview_profile(data):
 
     table = "│"
     table += f"{ID_COLOUR}{data[0]}{BORDER_COLOUR}│"
