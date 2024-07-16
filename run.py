@@ -12,6 +12,7 @@ gsheet = None
 valid = None
 # Colour codes for printing to terminal
 
+BLACK = "\033[30m"
 RED = "\033[91m"
 GREEN = "\033[92m"
 YELLOW = "\033[93m"
@@ -62,7 +63,7 @@ def main_menu():
     elif option == 3:
         search_for_a_profile()
     elif option == 4:
-        pass
+        log_a_visit()
     elif option == 5:
         pass
 
@@ -75,6 +76,7 @@ def see_all_data():
     Id = get_user_input_id()
     print(f"{GREEN}           Getting {ID_COLOUR}{Id}{GREEN}'s history data....")
     print_history_table(gsheet.get_history_data(int(Id)))
+    return_to_main_menu_prompt()
 
 
     
@@ -103,6 +105,23 @@ def search_for_a_profile():
 
     matching_profiles = get_profiles_by_search(str(search_field))
     print_profile_table(matching_profiles)
+    return_to_main_menu_prompt()
+
+def log_a_visit():
+    
+    clear_terminal()
+    print(f"{WHITE}To select the customer:\n")
+    Id = get_user_input_id()
+
+    data = gsheet.get_history_data(int(Id))
+
+    if is_user_active(data[4]):
+        add_users_visit(Id)
+    else:
+        print(f"{RED} User is not subscribed{RESET_COLOUR}")
+    
+def add_users_visit(Id):
+    pass
 
 def get_profiles_by_search(search_field):
 
@@ -139,6 +158,10 @@ def does_id_exist(input_Id):
     return False
 
 
+def return_to_main_menu_prompt():
+    input(f"{WHITE}Press {BLUE}ENTER{WHITE} to return to Main Menu{BLACK}\n")
+    main_menu()
+
 
 def get_user_input(field,validate_function,colour):
     while True:
@@ -153,9 +176,9 @@ def get_user_input(field,validate_function,colour):
 def is_user_active(date):
     
     if valid.is_date_before_today(date):
-        return "FALSE"
+        return False
     else:
-        return "TRUE"
+        return True
 
 
 
@@ -256,7 +279,7 @@ def print_profile_table(data):
 def get_enddates(data):
     
     all_enddates = gsheet.get_enddates()
-    enddates = [all_enddates[0]]  # adds the header
+    enddates = [all_enddates[0]]  # adds the headers
 
     for profile in data[1:]:
         enddates.append(all_enddates[int(profile[0])])
