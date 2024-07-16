@@ -72,6 +72,17 @@ class GoogleSheets:
             visits_data += "|" + date
         self.history.update_cell(Id + 1,4,visits_data)  # id + 1 because 1st row is category headers
 
+    
+    def add_payment(self,payment_amount,today_date,enddate,Id,payments_data):
+        if payments_data == "":
+            payments_data += f"{payment_amount},{today_date}|"
+        else:
+            payments_data += f"|{payment_amount},{today_date}"
+        self.history.update_cell(Id + 1,3,payments_data)
+        self.history.update_cell(Id + 1,5,enddate)
+        
+
+
 
         
         

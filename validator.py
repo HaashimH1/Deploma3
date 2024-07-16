@@ -29,6 +29,19 @@ class Validator:
             return False
 
 
+    
+    def validate_option_type_months(self,option,field):
+        try:
+            if int(option) in [1,3,6,9,12]:
+                return True
+            else:
+                self.print_to_terminal(field,"be either 1,3,6,9,12")
+                return False
+        except:
+            self.print_to_terminal(field,"be a number")
+            return False
+
+
 
 
     def validate_name(self,name,field):
@@ -91,6 +104,7 @@ class Validator:
     def check_if_date_is_real(self,date):
 
         day, month, year = date.split('/')
+        
         day = int(day)
         month = int(month)
         year = int(year)

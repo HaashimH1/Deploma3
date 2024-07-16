@@ -29,6 +29,13 @@ EMAIL_COLOUR = YELLOW
 PHONE_COLOUR = PURPLE
 DOB_COLOUR = BLUE
 
+PAYMENT_AMOUNT_1MONTH = 29.99
+PAYMENT_AMOUNT_3MONTH = 79.99
+PAYMENT_AMOUNT_6MONTH = 149.99
+PAYMENT_AMOUNT_9MONTH = 219.99
+PAYMENT_AMOUNT_12MONTH = 249.99
+
+
 def main():
 
     print("setting up...")
@@ -49,7 +56,7 @@ def main_menu():
     print(f"\n\n          {YELLOW}Main Menu\n      {GREEN}Choose an Option:\n")
     print(f"     {BLUE}1 {WHITE}--> See all Data\n")
     print(f"     {BLUE}2 {WHITE}--> Create a Profile\n")
-    print(f"     {BLUE}3 {WHITE}--> Search for a profile\n")
+    print(f"     {BLUE}3 {WHITE}--> Edit a Profile\n")
     print(f"     {BLUE}4 {WHITE}--> Log a Visit\n")
     print(f"     {BLUE}5 {WHITE}--> Make a Payment\n")
     
@@ -61,11 +68,11 @@ def main_menu():
     elif option == 2:
         create_a_profile()
     elif option == 3:
-        search_for_a_profile()
+        edit_a_profile()
     elif option == 4:
         log_a_visit()
     elif option == 5:
-        pass
+        make_a_payment()
 
 def see_all_data():
 
@@ -97,20 +104,13 @@ def create_a_profile():
     gsheet.add_new_profile(new_row,Id,valid.get_todays_date())
     print(f"\n{GREEN}         New Pofile succesfully added to database")
 
-def search_for_a_profile():
-
-    clear_terminal()
-    search_field = input(f"{WHITE}Enter a {BLUE}search field{WHITE} >\n")
-    print(f"{GREEN} Searching for '{BLUE}{search_field}{GREEN}' ....")
-
-    matching_profiles = get_profiles_by_search(str(search_field))
-    print_profile_table(matching_profiles)
-    return_to_main_menu_prompt()
+def edit_a_profile():
+    pass
 
 def log_a_visit():
-    
+
     clear_terminal()
-    print(f"{WHITE}To select the customer:\n")
+    search_for_a_profile()
     Id = int(get_user_input_id())
     data = gsheet.get_history_data(Id)
 
@@ -120,9 +120,92 @@ def log_a_visit():
         print(f"{RED}User has already logged today{RESET_COLOUR}")
     else:
         gsheet.add_visit(valid.get_todays_date(),Id,data[3])
-        print(f"{GREEN}Logged Users Visit{RESET_COLOUR}")
-        return_to_main_menu_prompt()
+        print(f"{GREEN}        Logged Users Visit{RESET_COLOUR}")
 
+    return_to_main_menu_prompt()
+
+def make_a_payment():
+    
+    clear_terminal()
+    search_for_a_profile()
+    Id = int(get_user_input_id())
+
+    print(f"{WHITE}Now choose how many months to add (example: 3) >")
+    print(f"                {YELLOW}1{WHITE} Month -> £{PAYMENT_AMOUNT_1MONTH}")
+    print(f"                {YELLOW}3{WHITE} Month -> £{PAYMENT_AMOUNT_3MONTH}")
+    print(f"                {YELLOW}6{WHITE} Month -> £{PAYMENT_AMOUNT_6MONTH}")
+    print(f"                {YELLOW}9{WHITE} Month -> £{PAYMENT_AMOUNT_9MONTH}")
+    print(f"                {YELLOW}12{WHITE} Month -> £{PAYMENT_AMOUNT_12MONTH}")
+
+    months = int(get_user_input("Option",valid.validate_option_type_months,YELLOW))
+
+    payment_amount = None
+
+    if months == 1:
+        payment_amount = PAYMENT_AMOUNT_1MONTH
+    elif months == 3:
+        payment_amount = PAYMENT_AMOUNT_3MONTH
+    elif months == 6:
+        payment_amount = PAYMENT_AMOUNT_6MONTH
+    elif months == 9:
+        payment_amount = PAYMENT_AMOUNT_9MONTH
+    elif months == 12:
+        payment_amount = PAYMENT_AMOUNT_12MONTH
+    
+    data = gsheet.get_history_data(Id)
+    
+    old_enddate = data[4]
+    new_enddate = calculate_new_enddate(old_enddate,months)
+
+    gsheet.add_payment(payment_amount,valid.get_todays_date(),new_enddate,Id,data[2])
+    print(f"{GREEN} Payment Made")
+    return_to_main_menu_prompt()
+
+
+def calculate_new_enddate(old_enddate,months):
+
+    if valid.is_date_before_today(old_enddate):
+        return add_months_onto_date(valid.get_todays_date(),months)   
+    else:
+        return add_months_onto_date(old_enddate,months)    # adds months onto enddate given to stack subscription periods
+   
+
+def add_months_onto_date(date,months_to_add):
+
+    day,month,year = date.split("/")
+
+    day = int(day)
+    month = int(month)
+    year = int(year)
+
+    month += months_to_add
+
+    if month > 12:
+        month -= 12
+        year += 1
+
+    days_to_add = 0
+    while not valid.check_if_date_is_real(f"{day}/{month}/{year}"):
+        days_to_add += 1
+        day -= 1 
+    
+    if days_to_add > 0:
+        day = days_to_add
+        month += 1
+
+    if month > 12:
+        month -= 12
+        year += 1
+    
+    return f"{day}/{month}/{year}"
+
+def search_for_a_profile():
+
+    search_field = input(f"{WHITE}Enter a {BLUE}search field{WHITE} >\n")
+    print(f"{GREEN} Searching for '{BLUE}{search_field}{GREEN}' ....")
+
+    matching_profiles = get_profiles_by_search(str(search_field))
+    print_profile_table(matching_profiles)
 
         
     
