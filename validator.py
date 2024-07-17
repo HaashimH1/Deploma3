@@ -17,25 +17,12 @@ class Validator:
         else:
             return True
 
-    def validate_option_type_menu(self,option,field):
+    def validate_option(self,user_option,all_options,field):
         try:
-            if int(option) in [1,2,3,4,5]:
+            if int(user_option) in all_options:
                 return True
             else:
-                self.print_to_terminal(field,"be 1,2,3,4,5")
-                return False
-        except:
-            self.print_to_terminal(field,"be a number 1-5")
-            return False
-
-
-    
-    def validate_option_type_months(self,option,field):
-        try:
-            if int(option) in [1,3,6,9,12]:
-                return True
-            else:
-                self.print_to_terminal(field,"be either 1,3,6,9,12")
+                self.print_to_terminal(field,f"be {all_options}")
                 return False
         except:
             self.print_to_terminal(field,"be a number")

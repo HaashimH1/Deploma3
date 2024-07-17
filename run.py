@@ -56,7 +56,7 @@ def main_menu():
     print(f"     {BLUE}4 {WHITE}--> Log a Visit\n")
     print(f"     {BLUE}5 {WHITE}--> Make a Payment\n")
     
-    option = get_user_input("Option",valid.validate_option_type_menu,BLUE)
+    option = get_user_input("Option",valid.validate_option,BLUE,[1,2,3,4,5])
     option = int(option)
 
     if option == 1:
@@ -139,7 +139,7 @@ def make_a_payment():
     print(f"                {YELLOW}9{WHITE} Month -> £{PAYMENT_AMOUNT_9MONTH}")
     print(f"                {YELLOW}12{WHITE} Month -> £{PAYMENT_AMOUNT_12MONTH}")
 
-    months = int(get_user_input("Option",valid.validate_option_type_months,YELLOW))
+    months = int(get_user_input("Option",valid.validate_option,YELLOW,[1,3,6,9,12]))
 
     payment_amount = None
 
@@ -268,13 +268,19 @@ def return_to_main_menu_prompt():
     main_menu()
 
 
-def get_user_input(field,validate_function,colour):
-    while True:
+def get_user_input(field,validate_function,colour,options = []): # for menu options a list is passed in, if not options type validation then paramter is a empty list
+    while True:                                                                                                                  
         user_input = input(f"{WHITE}Please enter a {colour}{field}{WHITE}, or type '{BLUE}menu{WHITE}' to go back to main menu >{RESET_COLOUR} \n")
         if user_input.lower() == "menu":
             main_menu()
-        elif validate_function(user_input,field):
-            return user_input
+        else:
+            if options: 
+                if validate_function(user_input,options,field):
+                    return user_input
+            else:
+                if validate_function(user_input,field):
+                    return user_input
+
         
 
 
