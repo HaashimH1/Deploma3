@@ -106,7 +106,49 @@ def edit_a_profile():
     Id = int(get_user_input_id())
     data = gsheet.get_all_profile_data()[Id]
 
+    clear_terminal()
+
+    confirm_changes = False
+
+    while not confirm_changes:
+
+        print_preview_profile(data)
+
+        print(f"{WHITE}Now choose wahat field to change (example: 2) >\n")
+        print(f"                {RED}1{WHITE} -> {FNAME_COLOUR}firstname")
+        print(f"                {RED}2{WHITE} -> {LNAME_COLOUR}lastname")
+        print(f"                {RED}3{WHITE} -> {EMAIL_COLOUR}email")
+        print(f"                {RED}4{WHITE} -> {PHONE_COLOUR}phone number")
+        print(f"                {RED}5{WHITE} -> {DOB_COLOUR}date of birth")
+        print(f"                {RED}6{WHITE} -> {ID_COLOUR}CONFIRM AND SET CHANGES")
+
+        option = int(get_user_input("Option",valid.validate_option,BLUE,[1,2,3,4,5,6]))
+
+        if option == 1:
+            fname = get_user_input("Name",valid.validate_name,FNAME_COLOUR)
+            data[1] = fname
+        elif option == 2:
+            lname = get_user_input("Name",valid.validate_name,LNAME_COLOUR)
+            data[2] = lname
+        elif option == 3:
+            email = get_user_input("Email Address",valid.validate_email,EMAIL_COLOUR)
+            data[3] = email
+        elif option == 4:
+            phone = get_user_input("Phone Number",valid.validate_phone,PHONE_COLOUR)
+            data[4] = phone
+        elif option == 5:
+            dob = get_user_input("Date Of Birth",valid.validate_dob,DOB_COLOUR)
+            data[5] = dob
+        elif option == 6:
+            confirm_changes = True
+
+    clear_terminal()
     print_preview_profile(data)
+        
+
+        
+
+
 
 def log_a_visit():
 
@@ -132,12 +174,7 @@ def make_a_payment():
     Id = int(get_user_input_id())
     data = gsheet.get_history_data(Id)
 
-    print(f"{WHITE}Now choose how many months to add (example: 3) >")
-    print(f"                {YELLOW}1{WHITE} Month -> £{PAYMENT_AMOUNT_1MONTH}")
-    print(f"                {YELLOW}3{WHITE} Month -> £{PAYMENT_AMOUNT_3MONTH}")
-    print(f"                {YELLOW}6{WHITE} Month -> £{PAYMENT_AMOUNT_6MONTH}")
-    print(f"                {YELLOW}9{WHITE} Month -> £{PAYMENT_AMOUNT_9MONTH}")
-    print(f"                {YELLOW}12{WHITE} Month -> £{PAYMENT_AMOUNT_12MONTH}")
+ 
 
     months = int(get_user_input("Option",valid.validate_option,YELLOW,[1,3,6,9,12]))
 
