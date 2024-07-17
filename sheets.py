@@ -74,6 +74,11 @@ class GoogleSheets:
         payments_data += f"{payment_amount},{today_date}|"
         self.history.update_cell(Id + 1,3,payments_data)
         self.history.update_cell(Id + 1,5,enddate)
+
+
+    def update_profile(self,data):
+        index = int(data[0]) + 1
+        self.profiles.update(f"A{index}",[data])
         
 
 

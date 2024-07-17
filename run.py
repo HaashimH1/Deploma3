@@ -144,6 +144,9 @@ def edit_a_profile():
 
     clear_terminal()
     print_preview_profile(data)
+    gsheet.update_profile(data)
+    print(f"{GREEN} Profile updated")
+    return_to_main_menu_prompt()
         
 
         
