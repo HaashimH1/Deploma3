@@ -305,7 +305,7 @@ def print_history_table(data):
     payments = data[2].split("|")
     visits = data[3].split("|")
 
-    number_of_rows = max(len(payments),len(visits))
+    number_of_rows = max(len(payments),len(visits)) - 1
     
     space = " "
 
@@ -395,17 +395,19 @@ def get_enddates(data):
 
 def print_preview_profile(data):
 
-    table = "│"
+    dashes = BORDER_COLOUR + "━"*(30 + len(data[1]) + len(data[2]) + len(data[3]) ) + "\n"
+    table = dashes
+    
+    table += "│"
     table += f"{ID_COLOUR}{data[0]}{BORDER_COLOUR}│"
-    table += f"{FNAME_COLOUR}{data[1]}{BORDER_COLOUR}│"
-    table += f"{LNAME_COLOUR}{data[2]}{BORDER_COLOUR}│"
-    table += f"{EMAIL_COLOUR}{data[3]}{BORDER_COLOUR}│"
+    table += f"{FNAME_COLOUR}{data[1].upper()}{BORDER_COLOUR}│"
+    table += f"{LNAME_COLOUR}{data[2].upper()}{BORDER_COLOUR}│"
+    table += f"{EMAIL_COLOUR}{data[3].upper()}{BORDER_COLOUR}│"
     table += f"{PHONE_COLOUR}{data[4]}{BORDER_COLOUR}│"
-    table += f"{DOB_COLOUR}{data[5]}{BORDER_COLOUR}│"
+    table += f"{DOB_COLOUR}{data[5]}{BORDER_COLOUR}│\n"
+    table += dashes
 
     print(f"\n{table}")
-
-
 
 
 def clear_terminal():
