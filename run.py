@@ -236,15 +236,16 @@ def delete_a_profile():
     clear_terminal()
     search_for_a_profile()
     Id = int(get_user_input_id())
-    data = gsheet.get_all_profile_data(Id)
+    data = gsheet.get_all_profile_data()[Id]
 
     print_preview_profile(data)
-    print_history_table(Id)
+    print_history_table(gsheet.get_history_data(Id))
 
-    print(f"{WHITE}Are you sure you would like to delete this profile and its history data {RED}PERMANTLY{RESET_COLOUR}")
+    print(f"{WHITE}Are you sure you would like to delete this profile and its history data {RED}PERMANTLY{WHITE}, enter '{YELLOW}confirm'{WHITE} to delete this profile")
     confirmation = get_user_input("Confirmation",valid.validate_confirmation,YELLOW)
-
+    gsheet.delete_row_at_id(Id)
     print(f"{GREEN}Profile and its history deleted")
+    return_to_main_menu_prompt()
 
 def calculate_new_enddate(old_enddate,months):
 

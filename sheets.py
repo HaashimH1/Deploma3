@@ -53,14 +53,12 @@ class GoogleSheets:
         
 
     def delete_row_at_id(self,id:int):
-        print(f"deleting row at id: {id}")
         self.profiles.delete_rows(id+1)    # id + 1 because 1st row is category headers
         self.history.delete_rows(id+1) 
         self.reasign_ids()
 
 
     def reasign_ids(self):
-         print("reassigning IDs...")
          for i in range(1, len(self.profiles.get_all_values())):
              self.profiles.update_cell(i + 1, 1, i)
              self.history.update_cell(i + 1, 1, i)
