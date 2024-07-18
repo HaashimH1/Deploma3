@@ -87,6 +87,13 @@ class Validator:
         else:
             return True
 
+    def validate_confirmation(self,confirm,field):
+
+        if confirm.lower() == "confirm":
+            return True
+        else:
+            self.print_to_terminal(field,"be 'confirm'")
+
 
     def check_if_date_is_real(self,date):
 

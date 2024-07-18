@@ -10,8 +10,8 @@ import os
 # All global variables
 gsheet = None
 valid = None
-# Colour codes for printing to terminal
 
+# Colour codes for printing to terminal
 BLACK = "\033[30m"
 RED = "\033[91m"
 GREEN = "\033[92m"
@@ -29,6 +29,7 @@ EMAIL_COLOUR = YELLOW
 PHONE_COLOUR = PURPLE
 DOB_COLOUR = BLUE
 
+# subscription pricings
 PAYMENT_AMOUNT_1MONTH = 29.99
 PAYMENT_AMOUNT_3MONTH = 79.99
 PAYMENT_AMOUNT_6MONTH = 149.99
@@ -37,6 +38,11 @@ PAYMENT_AMOUNT_12MONTH = 249.99
 
 
 def main():
+    """
+    Creates objects for both googlesheets and validator clasess.
+    Starts the main menu after setup
+
+    """
     print(f"{GREEN}    Setting up...")
     global gsheet
     global valid
@@ -47,7 +53,11 @@ def main():
 
     
 def main_menu():
-   
+    """
+    Prints menu options to user.
+    Each option calls another function respective to the option chosen
+
+    """
     clear_terminal()
     print(f"\n\n          {YELLOW}Main Menu\n      {GREEN}Choose an Option:\n")
     print(f"     {BLUE}1 {WHITE}--> See all Data\n")
@@ -55,8 +65,9 @@ def main_menu():
     print(f"     {BLUE}3 {WHITE}--> Edit a Profile\n")
     print(f"     {BLUE}4 {WHITE}--> Log a Visit\n")
     print(f"     {BLUE}5 {WHITE}--> Make a Payment\n")
+    print(f"     {BLUE}6 {WHITE}--> Delete a Profile\n")
     
-    option = get_user_input("Option",valid.validate_option,BLUE,[1,2,3,4,5])
+    option = get_user_input("Option",valid.validate_option,BLUE,[1,2,3,4,5,6])
     option = int(option)
 
     if option == 1:
@@ -69,9 +80,15 @@ def main_menu():
         log_a_visit()
     elif option == 5:
         make_a_payment()
+    elif option == 6:
+        delete_a_profile()
 
 def see_all_data():
-   
+    """
+    Prints all profiles.
+    User input ID to see specific profiles history data
+
+    """
     clear_terminal()
     print(f"\n\n                   {GREEN}Getting all Profiles....\n")
     print_profile_table(gsheet.get_all_profile_data())
@@ -84,7 +101,13 @@ def see_all_data():
 
     
 def create_a_profile():
+    """
+    Each field for a new profile is entered and validated.
+    ID is then genrated based on current ID's in sheet
+    Previews the new profile showing all fields entered.
+    Adds the profile to the sheet.
 
+    """
     clear_terminal()
     firstname = get_user_input("First Name",valid.validate_name,FNAME_COLOUR)
     lastname = get_user_input("last Name",valid.validate_name,LNAME_COLOUR)  
@@ -100,7 +123,15 @@ def create_a_profile():
     print(f"\n{GREEN}         New Pofile succesfully added to database")
 
 def edit_a_profile():
+    """
+    User enters search query to show a table of profiles matching the query.
+    User enters ID to select the profile.
+    User enters which field they want to edit.
+    Previews thw profile with the new data.
+    Loops this untill user chooses to set the changes made.
+
     
+    """
     clear_terminal()
     search_for_a_profile()
     Id = int(get_user_input_id())
@@ -149,8 +180,6 @@ def edit_a_profile():
     return_to_main_menu_prompt()
         
 
-        
-
 
 
 def log_a_visit():
@@ -177,8 +206,6 @@ def make_a_payment():
     Id = int(get_user_input_id())
     data = gsheet.get_history_data(Id)
 
- 
-
     months = int(get_user_input("Option",valid.validate_option,YELLOW,[1,3,6,9,12]))
 
     payment_amount = None
@@ -203,6 +230,21 @@ def make_a_payment():
     print(f"{GREEN} Payment Made")
     return_to_main_menu_prompt()
 
+
+def delete_a_profile():
+    
+    clear_terminal()
+    search_for_a_profile()
+    Id = int(get_user_input_id())
+    data = gsheet.get_all_profile_data(Id)
+
+    print_preview_profile(data)
+    print_history_table(Id)
+
+    print(f"{WHITE}Are you sure you would like to delete this profile and its history data {RED}PERMANTLY{RESET_COLOUR}")
+    confirmation = get_user_input("Confirmation",valid.validate_confirmation,YELLOW)
+
+    print(f"{GREEN}Profile and its history deleted")
 
 def calculate_new_enddate(old_enddate,months):
 
