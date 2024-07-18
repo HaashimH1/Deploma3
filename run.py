@@ -39,8 +39,8 @@ PAYMENT_AMOUNT_12MONTH = 249.99
 
 def main():
     """
-    Creates objects for both googlesheets and validator clasess.
-    Starts the main menu after setup
+    Seting up the program, crating objects for googlesheets and validator classes.
+    Shows the main menu after setup
 
     """
     print(f"{GREEN}    Setting up...")
@@ -54,8 +54,8 @@ def main():
     
 def main_menu():
     """
-    Prints menu options to user.
-    Each option calls another function respective to the option chosen
+    Shows all menu options. 
+    Input is validated and calls another function according to option chosen
 
     """
     clear_terminal()
@@ -85,8 +85,8 @@ def main_menu():
 
 def see_all_data():
     """
-    Prints all profiles.
-    User input ID to see specific profiles history data
+    Shows all profiles in a table.
+    User enters an ID to see its history data.
 
     """
     clear_terminal()
@@ -102,10 +102,9 @@ def see_all_data():
     
 def create_a_profile():
     """
-    Each field for a new profile is entered and validated.
-    ID is then genrated based on current ID's in sheet
-    Previews the new profile showing all fields entered.
-    Adds the profile to the sheet.
+    Guides user through creating a new profile, validating all data input
+    for each field. ID is generated based on  the order of existing profiles.
+    Previews the new profiles data, then updates sheet with new profile
 
     """
     clear_terminal()
@@ -124,13 +123,13 @@ def create_a_profile():
 
 def edit_a_profile():
     """
-    User enters search query to show a table of profiles matching the query.
-    User enters ID to select the profile.
-    User enters which field they want to edit.
-    Previews thw profile with the new data.
-    Loops this untill user chooses to set the changes made.
+    User searches through profiles with a search field, then enters
+    the ID of profile user wants to select.
+    User then enters which field they want to edit, previews the
+    profile with its new data then loops this untill user has
+    chosen to set the changes.
+    Previews the final profiles' data and updates sheet accordingly
 
-    
     """
     clear_terminal()
     search_for_a_profile()
@@ -183,7 +182,14 @@ def edit_a_profile():
 
 
 def log_a_visit():
-
+    """
+    User searches through profiles with a search field, then enters
+    the ID of profile user wants to select.
+    Checks to see if the customers subscription is active or if they
+    have visited today already.
+    Then updates sheet accordingly to show the visit.
+    
+    """
     clear_terminal()
     search_for_a_profile()
     Id = int(get_user_input_id())
@@ -200,7 +206,14 @@ def log_a_visit():
     return_to_main_menu_prompt()
 
 def make_a_payment():
+    """
+    User searches through profiles with a search field, then enters
+    the ID of profile user wants to select.
+    Then enters which package the payment is for, calculates the
+    new subscription enddate.
+    Updates sheet accordingly to show the payment
     
+    """
     clear_terminal()
     search_for_a_profile()
     Id = int(get_user_input_id())
@@ -232,7 +245,14 @@ def make_a_payment():
 
 
 def delete_a_profile():
+    """
+    User searches through profiles with a search field, then enters
+    the ID of profile user wants to select.
+    Previews all data linked to that customer, then must enter a
+    confirmation for deleting a profile.
+    Updates sheets accordingly to remove the profile. 
     
+    """
     clear_terminal()
     search_for_a_profile()
     Id = int(get_user_input_id())
@@ -248,7 +268,18 @@ def delete_a_profile():
     return_to_main_menu_prompt()
 
 def calculate_new_enddate(old_enddate,months):
+    """
+    Checks to see if enddate is before today, if it not then
+    subscription needs to be stacked with existing subscription so
+    it give the date of the enddate provided. If it is before today
+    then provides todays date.
 
+    param old_enddate: enddate provided
+    param months: how many months need to be added
+
+    return: the result that come back from the function below
+
+    """
     if valid.is_date_before_today(old_enddate):
         return add_months_onto_date(valid.get_todays_date(),months)   
     else:
@@ -256,6 +287,16 @@ def calculate_new_enddate(old_enddate,months):
    
 
 def add_months_onto_date(date,months_to_add):
+    """
+    Adds a specified number of months to a given date.
+    Adjusts the date accordingly to make sure the date is a real date.
+
+    param date: date provided
+    param months_to_add : number of months to add
+
+    return: the final enddate after the addition and adjustments
+
+    """
 
     day,month,year = date.split("/")
 
@@ -265,10 +306,12 @@ def add_months_onto_date(date,months_to_add):
 
     month += months_to_add
 
+    # if month exceeds decmeber
     if month > 12:
         month -= 12
         year += 1
 
+    # if the date is not real after addition (example: 30/02/1985)
     days_to_add = 0
     while not valid.check_if_date_is_real(f"{day}/{month}/{year}"):
         days_to_add += 1
@@ -282,6 +325,7 @@ def add_months_onto_date(date,months_to_add):
         month -= 12
         year += 1
 
+    # puts a 0 in front of a single digit date or month
     if day < 10:
         day = f"0{day}"
     if month < 10:
@@ -290,6 +334,12 @@ def add_months_onto_date(date,months_to_add):
     return f"{day}/{month}/{year}"
 
 def search_for_a_profile():
+    """
+    User enters a search query, then passes the query into
+    another function which will return the matching profiles
+    and display them in a table
+
+    """
 
     search_field = input(f"{WHITE}Enter a {BLUE}search field{WHITE} >\n")
     print(f"{GREEN} Searching for '{BLUE}{search_field}{GREEN}' ....")
@@ -300,6 +350,12 @@ def search_for_a_profile():
         
     
 def check_user_logged_today(all_visits):
+    """
+    Checks if the user has already logged today
+
+    return: True if has logged today, False otherwise
+
+    """
 
     each_visit = all_visits.split("|")
     for date in each_visit:
@@ -312,6 +368,14 @@ def check_user_logged_today(all_visits):
 
 
 def get_profiles_by_search(search_field):
+    """
+    loops through all profiles data to find a match against the search field
+    and add the profile to a list.
+
+    param search field: search criteria to match
+    return: list of mathcing profiles found
+
+    """
 
     all_profiles = gsheet.get_all_profile_data()
     matching_profiles = [all_profiles[0]] # asigns the headers
@@ -328,6 +392,12 @@ def get_profiles_by_search(search_field):
 
 
 def get_user_input_id():
+    """
+    Loops untill user enters a valid ID
+
+    return: ID as a string after validation 
+
+    """
     while True:
         Id = get_user_input("ID",valid.is_integer,ID_COLOUR)
         if does_id_exist(Id):
@@ -339,6 +409,12 @@ def get_user_input_id():
 
 
 def does_id_exist(input_Id):
+    """
+    Checks to see of given ID exists in the sheet
+
+    return: True if ID is in the sheet, False if not
+
+    """
     IDs = gsheet.get_IDs()
     for ID in IDs[1:]:
         if ID == input_Id:
@@ -347,11 +423,29 @@ def does_id_exist(input_Id):
 
 
 def return_to_main_menu_prompt():
-    input(f"{WHITE}Press {BLUE}ENTER{WHITE} to return to Main Menu{BLACK}\n")
+    """
+    Prompt to hit any key to return to main menu
+
+    """
+    input(f"{WHITE}Press {BLUE}ANY KEY{WHITE} to return to Main Menu{BLACK}\n")
     main_menu()
 
 
 def get_user_input(field,validate_function,colour,options = []): # for menu options a list is passed in, if not options type validation then paramter is a empty list
+    """
+    Loop to prompt the user to enter a value for a specified field, then
+    passes the input to the validation function given to be checked.
+
+    param:
+        field: the name of the field being validated
+        validate_function: the certain validate function for that field
+        colour: the colour of the fields name when printed to terminal
+        options: list of integers that contains menu options available
+
+    return: users input after validation
+
+
+    """
     while True:                                                                                                                  
         user_input = input(f"{WHITE}Please enter a {colour}{field}{WHITE}, or type '{BLUE}menu{WHITE}' to go back to main menu >{RESET_COLOUR} \n")
         if user_input.lower() == "menu":
@@ -368,6 +462,13 @@ def get_user_input(field,validate_function,colour,options = []): # for menu opti
 
 
 def is_user_active(date):
+    """
+    checks to see if profiles enddate provided makes
+    the subscription active or not
+
+    return: True if subscription is active, False if not
+
+    """
     
     if valid.is_date_before_today(date):
         return False
@@ -378,8 +479,14 @@ def is_user_active(date):
 
 
 def print_history_table(data):
+    """
+    Displays the history data of all the data provided
     
-    dashes = BORDER_COLOUR + ("━"*55)+"\n"
+    param data: list containing all the data of the profiles history
+
+    """
+    
+    dashes = BORDER_COLOUR + ("━"*55)+"\n" # amount of dashes to create the top and bottom border
     table = dashes
 
     table += "│"
@@ -431,6 +538,12 @@ def print_history_table(data):
 
 
 def print_profile_table(data):
+    """
+    Displays the profile data of all the data provided
+    
+    param data: list containing all the data of the profile
+
+    """
 
     # Calculate the maximum length for firstname, lastname, and email columns
     max_firstname_len = max(len(row[1]) for row in data)
@@ -471,6 +584,12 @@ def print_profile_table(data):
     print(table)
             
 def get_enddates(data):
+    """
+    Gets the enddates for the profiles passed
+
+    param data: list of profiles
+
+    """
     
     all_enddates = gsheet.get_enddates()
     enddates = [all_enddates[0]]  # adds the headers
@@ -483,6 +602,12 @@ def get_enddates(data):
 
 
 def print_preview_profile(data):
+    """
+    Displays a preview of the profile from the data provided as a table
+
+    param data: list of data fields
+
+    """
 
     dashes = BORDER_COLOUR + "━"*(30 + len(data[1]) + len(data[2]) + len(data[3]) ) + "\n"
     table = dashes
@@ -502,6 +627,7 @@ def print_preview_profile(data):
 def clear_terminal():
     """
     Clears the terminal screen.
+
     """
     # Check the OS and send the appropriate command
     if os.name == 'nt':  # For Windows
