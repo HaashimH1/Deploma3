@@ -59,14 +59,29 @@ def main_menu():
     Input is validated and calls another function according to option chosen
 
     """
+    logo = f"""{YELLOW}
+   _____  __     __  __  __       
+  / ____| \ \   / / |  \/  |      
+ | |  __   \ \_/ /  | \  / |      
+ | | |_ |   \   /   | |\/| |      
+ | |__| |__  | |    | |  | |      
+  \_____/ _| |_|    |_|  |_|      
+       | |_    __ _    ___    ___ 
+       |  _|  / _` |  / __|  / _ \\
+       | |   | (_| | | (__  |  __/
+       |_|    \__,_|  \___|  \___|
+"""
+
+
     clear_terminal()
-    print(f"\n\n          {YELLOW}Main Menu\n      {GREEN}Choose an Option:\n")
-    print(f"     {BLUE}1 {WHITE}--> See all Data\n")
-    print(f"     {BLUE}2 {WHITE}--> Create a Profile\n")
-    print(f"     {BLUE}3 {WHITE}--> Edit a Profile\n")
-    print(f"     {BLUE}4 {WHITE}--> Log a Visit\n")
-    print(f"     {BLUE}5 {WHITE}--> Make a Payment\n")
-    print(f"     {BLUE}6 {WHITE}--> Delete a Profile\n")
+    print(logo)
+    print(f"\n        {PURPLE}Main Menu\n    {GREEN}Choose an Option:\n")
+    print(f"   {BLUE}1 {WHITE}--> See all Data\n")
+    print(f"   {BLUE}2 {WHITE}--> Create a Profile\n")
+    print(f"   {BLUE}3 {WHITE}--> Edit a Profile\n")
+    print(f"   {BLUE}4 {WHITE}--> Log a Visit\n")
+    print(f"   {BLUE}5 {WHITE}--> Make a Payment\n")
+    print(f"   {BLUE}6 {WHITE}--> Delete a Profile\n")
     
     option = get_user_input("Option",valid.validate_option,BLUE,[1,2,3,4,5,6])
     option = int(option)
