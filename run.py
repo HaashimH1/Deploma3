@@ -74,15 +74,12 @@ def main_menu():
 
 
     clear_terminal()
+    
     print(logo)
     print(f"\n        {PURPLE}Main Menu\n    {GREEN}Choose an Option:\n")
-    print(f"   {BLUE}1 {WHITE}--> See all Data\n")
-    print(f"   {BLUE}2 {WHITE}--> Create a Profile\n")
-    print(f"   {BLUE}3 {WHITE}--> Edit a Profile\n")
-    print(f"   {BLUE}4 {WHITE}--> Log a Visit\n")
-    print(f"   {BLUE}5 {WHITE}--> Make a Payment\n")
-    print(f"   {BLUE}6 {WHITE}--> Delete a Profile\n")
-    
+    print(f"   {BLUE}1 {WHITE}--> See all Data    {BLUE}2 {WHITE}--> Create a Profile  {BLUE}3 {WHITE}--> Edit a Profile\n")
+    print(f"   {BLUE}4 {WHITE}--> Log a Visit     {BLUE}5 {WHITE}--> Make a Payment    {BLUE}6 {WHITE}--> Delete a Profile\n")
+
     option = get_user_input("Option",valid.validate_option,BLUE,[1,2,3,4,5,6])
     option = int(option)
 
