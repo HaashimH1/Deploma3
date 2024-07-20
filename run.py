@@ -11,7 +11,7 @@ import os
 gsheet = None
 valid = None
 
-# Colour codes for printing to terminal
+# colour codes for printing to terminal
 BLACK = "\033[30m"
 RED = "\033[91m"
 GREEN = "\033[92m"
@@ -21,6 +21,7 @@ PURPLE = "\033[95m"
 WHITE = "\033[97m"
 RESET_COLOUR = "\033[0m"
 
+# each field is asigned a colour
 BORDER_COLOUR = WHITE
 ID_COLOUR = RED
 FNAME_COLOUR = GREEN
