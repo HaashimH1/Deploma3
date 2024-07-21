@@ -460,7 +460,7 @@ def get_user_input(field,validate_function,colour,options = []): # for menu opti
 
     """
     while True:                                                                                                                  
-        user_input = input(f"{WHITE}Please enter a {colour}{field}{WHITE}, or type '{BLUE}menu{WHITE}' to go back to main menu >{RESET_COLOUR} \n")
+        user_input = input(f"{WHITE}Please enter a {colour}{field}{WHITE}, or type '{PURPLE}menu{WHITE}' to go back to main menu >{RESET_COLOUR} \n")
         if user_input.lower() == "menu":
             main_menu()
         else:
@@ -517,7 +517,7 @@ def print_history_table(data):
     number_of_rows = max(len(payments),len(visits)) - 1
 
         
-    if number_of_rows == 1:
+    if number_of_rows == 0:
         number_of_rows = 1
     
     space = " "
