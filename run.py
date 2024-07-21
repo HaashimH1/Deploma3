@@ -589,7 +589,7 @@ def print_profile_table(data):
         if i==0:
             table += f"{ID_COLOUR}ACTIVE{BORDER_COLOUR}│"
         else:
-            table += f"{ID_COLOUR}{is_user_active(enddates[i]):<6}{BORDER_COLOUR}│"
+            table += f"{ID_COLOUR}{str(is_user_active(enddates[i])):<6}{BORDER_COLOUR}│"
         table += "\n"
 
         # adds border below header row

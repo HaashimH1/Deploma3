@@ -23,12 +23,12 @@ Users expect to :
 
 Whole program is contained in a terminal window, 80 x 24 characters wide and long.
 
-![first lauching the terminal](README_assets/doc_1.png)
+![first lauching the terminal](/README_assets/doc_1.png)
 - Upon launching the program, it first sets up the connections to the Google spreadsheet, giving a message 'setting up..'
 - Also on the website there is a button 'RUN PROGRAM' which can start or restart the program.
 
 ![main menu](/README_assets/doc_2.png)
-- Upon setup completion the main menu is displayed, showing 6 different options to choose from.
+- Upon setup completion the main menu is displayed, showing 6 different options to choose from. 
 
 
 ## Implementation
