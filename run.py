@@ -232,6 +232,13 @@ def make_a_payment():
     Id = int(get_user_input_id())
     data = gsheet.get_history_data(Id)
 
+    print(f"{WHITE}Now choose how many months to add (example: 3) >")
+    print(f"                {YELLOW}1{WHITE} Month -> £{PAYMENT_AMOUNT_1MONTH}")
+    print(f"                {YELLOW}3{WHITE} Month -> £{PAYMENT_AMOUNT_3MONTH}")
+    print(f"                {YELLOW}6{WHITE} Month -> £{PAYMENT_AMOUNT_6MONTH}")
+    print(f"                {YELLOW}9{WHITE} Month -> £{PAYMENT_AMOUNT_9MONTH}")
+    print(f"                {YELLOW}12{WHITE} Month -> £{PAYMENT_AMOUNT_12MONTH}")
+
     months = int(get_user_input("Option",valid.validate_option,YELLOW,[1,3,6,9,12]))
 
     payment_amount = None
