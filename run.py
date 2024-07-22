@@ -133,6 +133,7 @@ def create_a_profile():
     print_preview_profile(new_row)
     gsheet.add_new_profile(new_row,Id,valid.get_todays_date())
     print(f"\n{GREEN}         New Pofile succesfully added to database")
+    return_to_main_menu_prompt()
 
 def edit_a_profile():
     """
