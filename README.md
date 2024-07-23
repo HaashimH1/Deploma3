@@ -240,5 +240,123 @@ class Validator:
 ```
 - Not much going on, just sets the colour code attributes that this file would need
 
-### Menu Options
+### Menu
+Firstly, the terminal is cleared using this function below:
+
+```python
+def clear_terminal():
+    # Check the OS and send the appropriate command
+    if os.name == 'nt':  # For Windows
+        os.system('cls')
+    else:  # For Linux and Mac
+        os.system('clear')
+```
+Then after displaying the menu option to user, a function `get_user_input()` is always used to obtain the input of ther user and make sure it is validated, below is the function:
+```python
+def get_user_input(field,validate_function,colour,options = []):
+  
+    while True:                                                                                                                  
+        user_input = input(f"{WHITE}Please enter a {colour}{field}{WHITE}, or type '{PURPLE}menu{WHITE}' to go back to main menu >{RESET_COLOUR} \n")
+        if user_input.lower() == "menu":
+            main_menu()
+        else:
+            if options: 
+                if validate_function(user_input,options,field):
+                    return user_input
+            else:
+                if validate_function(user_input,field):
+                    return user_input
+```
+
+- There are 4 parameters
+  - `field`: the field of the input (example: email)
+  - `validate_function`: the function held in validator.py that will validate this specific field
+  - `colour`: colour to display as the field
+  - `options`: if the input is to choose an option, a list of integers are passed in
+
+1. **Input Prompt**:
+    - The user is prompted to enter a value for the specified `field`. The prompt includes an option to type 'menu' to return to the main menu.
+
+2. **Main Menu Navigation**:
+    - If the user types 'menu' (case-insensitive), the function calls `main_menu()` to navigate back to the main menu.
+
+3. **Input Validation**:
+    - If `options` is provided (i.e., not empty), the `validate_function` is called with `user_input`, `options`, and `field` as arguments.
+    - If `options` is empty, the `validate_function` is called with only `user_input` and `field` as arguments.
+    - If the `validate_function` returns `True`, indicating valid input, the function returns `user_input`.
+    - If the input is invalid, the loop continues until the user provides valid input or chooses to return to the main menu.
+
+
+For example This will get the user to choose an option in the main menu:
+```python
+option = get_user_input("Option",valid.validate_option,BLUE,[1,2,3,4,5,6])
+```
+- `Option` is the field as the use is choosing an 'Option' to choose from
+- `valid.validate_option` is the valids object method to handle this specific input
+- `BLUE` is the colour to display this field as
+- `[1,2,3,4,5,6]` Menu options are passed in as this is a option type, so this is also passed into the validate function
+
+Another Example, user is needs to input a Email Address
+```python
+email = get_user_input("Email Address",valid.validate_email,EMAIL_COLOUR)
+```
+- `Email Address` is the field as the use is inputting a Email
+- `valid.validate_email` is the valids object method to handle this specific input
+- `EMAIL_COLOUR` is the colour to display this field as
+- No List of integers were passed in so the when calling the validate function it does not include `options = []` as its an empty list
+
+Below is the function in validator.py that will validate the input for menu options:
+```python
+def validate_option(self,user_option,all_options,field):
+        try:
+            if int(user_option) in all_options:
+                return True
+            else:
+                self.print_to_terminal(field,f"be {all_options}")
+                return False
+        except:
+            self.print_to_terminal(field,"be a number")
+            return False
+```
+- `print_to_terminal()` is a functions that is used to display the error message if a input is invalid for all fields, which will have arguements of the field being validated (exg: email) and the error message itself (be in the email format)
+
+Below is that function:
+```python
+def print_to_terminal(self,field,error_message):
+        print(f"{self.ERROR_COLOUR}Invalid {field}{self.RESET_COLOUR}: Must {error_message}")
+```
+
+- Then after the input is valid, a certain function is called and is determined by the option input.
+Below is the whole `main_menu()` function:
+```python
+def main_menu():
+
+    clear_terminal()
+
+    print(logo) # logo is a string of ascii characters that makes up the Gym face logo
+    print(f"\n                                   {PURPLE}Main Menu\n                               {GREEN}Choose an Option:\n")
+    print(f"   {BLUE}1 {WHITE}--> See all Data    {BLUE}2 {WHITE}--> Create a Profile  {BLUE}3 {WHITE}--> Edit a Profile\n")
+    print(f"   {BLUE}4 {WHITE}--> Log a Visit     {BLUE}5 {WHITE}--> Make a Payment    {BLUE}6 {WHITE}--> Delete a Profile\n")
+
+    option = get_user_input("Option",valid.validate_option,BLUE,[1,2,3,4,5,6])
+    option = int(option)
+
+    if option == 1:
+        see_all_data()
+    elif option == 2:
+        create_a_profile()
+    elif option == 3:
+        edit_a_profile()
+    elif option == 4:
+        log_a_visit()
+    elif option == 5:
+        make_a_payment()
+    elif option == 6:
+        delete_a_profile()
+```
+
+### See All Data
+
+
+
 
