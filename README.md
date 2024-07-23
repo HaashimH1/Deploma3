@@ -135,3 +135,14 @@ Whole program is contained in a terminal window, 80 x 24 characters wide and lon
 - Return to main menu prompt
 
 ## Implementation
+
+This section will go in depth on how all the features were implemented down to the code.
+
+But firstly we need to cover the file structure of 3 python files and their purposes:
+  - run.py -> Main Program Functions
+  - validator.py -> Validate user inputs
+  - sheets.py -> Set and Get data to/from the Google SpreadSheet
+
+![Class Diagram](/README_assets/doc_16.png)
+
+- Instances for both Validator and GoogleSheets are in run.py as this is the main file where all the program functions are so its objects methods are used to organise and increase reusabilty within the code.
