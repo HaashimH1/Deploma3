@@ -255,8 +255,6 @@ def make_a_payment():
     elif months == 12:
         payment_amount = PAYMENT_AMOUNT_12MONTH
     
-    
-    
     old_enddate = data[4]
     new_enddate = calculate_new_enddate(old_enddate,months)
 

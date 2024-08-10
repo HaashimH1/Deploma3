@@ -57,14 +57,14 @@ Whole program is contained in a terminal window, 80 x 24 characters wide and lon
 
 ![main menu](/README_assets/doc_2.png)
 
-- Upon setup completion the main menu is displayed, showing 6 different options to choose from.
+Upon setup completion the main menu is displayed, showing 6 different options to choose from.
 
-  1. See All data
-  2. Create a Profile
-  3. Edit a Profile
-  4. Log a Visit
-  5. Make a Payment
-  6. Delete a Profile
+1. See All data
+2. Create a Profile
+3. Edit a Profile
+4. Log a Visit
+5. Make a Payment
+6. Delete a Profile
 
 ### Option 1: See all Data
 
@@ -139,10 +139,12 @@ Whole program is contained in a terminal window, 80 x 24 characters wide and lon
 This section will go in depth on how all the features were implemented down to the code.
 
 ### File/Class Structure
+
 But firstly we need to cover the file structure of 3 python files and their purposes:
-  - run.py -> Main Program Functions
-  - validator.py -> Validate user inputs
-  - sheets.py -> Set and Get data to/from the Google SpreadSheet
+
+- run.py -> Main Program Functions
+- validator.py -> Validate user inputs
+- sheets.py -> Set and Get data to/from the Google SpreadSheet
 
 ![Class Diagram](/README_assets/doc_16.png)
 
@@ -156,9 +158,10 @@ The very first function that is called is main in run.py
 if __name__ == "__main__":
     main()
 ```
+
 - A condition to only run the program if the script is run from run.py, running the script using sheets/validator.py will not call the fucntion main
 
- Below is the global variables that will be used all over this file.
+Below is the global variables that will be used all over this file.
 
 ```python
 # All global variables
@@ -191,8 +194,9 @@ PAYMENT_AMOUNT_6MONTH = 149.99
 PAYMENT_AMOUNT_9MONTH = 219.99
 PAYMENT_AMOUNT_12MONTH = 249.99
 ```
-- Declaring objects so it can be accessed anywhere in this file. 
-- ANSI colour codes for displaying different coloured texts to terminal to show differentiation between fields and focus and certain aspects.
+
+- Declaring objects so it can be accessed anywhere in this file.
+- ANSI colour codes for displaying different coloured texts to terminal to show differentiation between fields and focus on certain aspects.
 - Subscription pricings so it can be easily updated without digging deep into code, as pricings are very volatile for a business.
 
 ```python
@@ -209,6 +213,7 @@ def main():
 - Initializes the objects which will setup each by its `__init__` methods, all messages that are printed to the terminal are mostly used by F strings as it is very easy to insert the colour code desired and its message, after the objects are initialized main_menu is displayed.
 
 Below are the `__init__` methods from both classes
+
 ```python
 # Global var for custom data to access google sheet as may be updated
 SPREADSHEET_NAME = "Deploma3"
@@ -229,8 +234,8 @@ class GoogleSheets:
         self.profiles = self.SHEET.worksheet(SHEET_NAME1)
         self.history = self.SHEET.worksheet(SHEET_NAME2)
 ```
-- Setups the API to the both sheets
 
+- Setups the API to the both sheets
 
 ```python
 class Validator:
@@ -238,96 +243,11 @@ class Validator:
         self.ERROR_COLOUR = ERROR_COLOUR
         self.RESET_COLOUR = RESET_COLOUR
 ```
+
 - Not much going on, just sets the colour code attributes that this file would need
 
 ### Menu
-Firstly, the terminal is cleared using this function below:
 
-```python
-def clear_terminal():
-    # Check the OS and send the appropriate command
-    if os.name == 'nt':  # For Windows
-        os.system('cls')
-    else:  # For Linux and Mac
-        os.system('clear')
-```
-Then after displaying the menu option to user, a function `get_user_input()` is always used to obtain the input of ther user and make sure it is validated, below is the function:
-```python
-def get_user_input(field,validate_function,colour,options = []):
-  
-    while True:                                                                                                                  
-        user_input = input(f"{WHITE}Please enter a {colour}{field}{WHITE}, or type '{PURPLE}menu{WHITE}' to go back to main menu >{RESET_COLOUR} \n")
-        if user_input.lower() == "menu":
-            main_menu()
-        else:
-            if options: 
-                if validate_function(user_input,options,field):
-                    return user_input
-            else:
-                if validate_function(user_input,field):
-                    return user_input
-```
-
-- There are 4 parameters
-  - `field`: the field of the input (example: email)
-  - `validate_function`: the function held in validator.py that will validate this specific field
-  - `colour`: colour to display as the field
-  - `options`: if the input is to choose an option, a list of integers are passed in
-
-1. **Input Prompt**:
-    - The user is prompted to enter a value for the specified `field`. The prompt includes an option to type 'menu' to return to the main menu.
-
-2. **Main Menu Navigation**:
-    - If the user types 'menu' (case-insensitive), the function calls `main_menu()` to navigate back to the main menu.
-
-3. **Input Validation**:
-    - If `options` is provided (i.e., not empty), the `validate_function` is called with `user_input`, `options`, and `field` as arguments.
-    - If `options` is empty, the `validate_function` is called with only `user_input` and `field` as arguments.
-    - If the `validate_function` returns `True`, indicating valid input, the function returns `user_input`.
-    - If the input is invalid, the loop continues until the user provides valid input or chooses to return to the main menu.
-
-
-For example This will get the user to choose an option in the main menu:
-```python
-option = get_user_input("Option",valid.validate_option,BLUE,[1,2,3,4,5,6])
-```
-- `Option` is the field as the use is choosing an 'Option' to choose from
-- `valid.validate_option` is the valids object method to handle this specific input
-- `BLUE` is the colour to display this field as
-- `[1,2,3,4,5,6]` Menu options are passed in as this is a option type, so this is also passed into the validate function
-
-Another Example, user is needs to input a Email Address
-```python
-email = get_user_input("Email Address",valid.validate_email,EMAIL_COLOUR)
-```
-- `Email Address` is the field as the use is inputting a Email
-- `valid.validate_email` is the valids object method to handle this specific input
-- `EMAIL_COLOUR` is the colour to display this field as
-- No List of integers were passed in so the when calling the validate function it does not include `options = []` as its an empty list
-
-Below is the function in validator.py that will validate the input for menu options:
-```python
-def validate_option(self,user_option,all_options,field):
-        try:
-            if int(user_option) in all_options:
-                return True
-            else:
-                self.print_to_terminal(field,f"be {all_options}")
-                return False
-        except:
-            self.print_to_terminal(field,"be a number")
-            return False
-```
-- `print_to_terminal()` is a functions that is used to display the error message if a input is invalid for all fields, which will have arguements of the field being validated (exg: email) and the error message itself (be in the email format)
-
-Below is that function:
-```python
-def print_to_terminal(self,field,error_message):
-        print(f"{self.ERROR_COLOUR}Invalid {field}{self.RESET_COLOUR}: Must {error_message}")
-```
-
-- Then after the input is valid, a certain function is called and is determined by the option input.
-Below is the whole `main_menu()` function:
 ```python
 def main_menu():
 
@@ -355,8 +275,314 @@ def main_menu():
         delete_a_profile()
 ```
 
+- Firstly, the terminal is cleared using a custom function
+- Then after displaying the menu option to user, a function `get_user_input()` is used to obtain the input of the user and make sure it is validated.
+- Function is called respective to menu option chosen
+
+The `get_user_input()` function will be used countless times throughout this program so below is how it works:
+
+```python
+def get_user_input(field,validate_function,colour,options = []):
+
+    while True:
+        user_input = input(f"{WHITE}Please enter a {colour}{field}{WHITE}, or type '{PURPLE}menu{WHITE}' to go back to main menu >{RESET_COLOUR} \n")
+        if user_input.lower() == "menu":
+            main_menu()
+        else:
+            if options:
+                if validate_function(user_input,options,field):
+                    return user_input
+            else:
+                if validate_function(user_input,field):
+                    return user_input
+```
+
+- There are 4 parameters
+  - `field`: the field of the input (example: email)
+  - `validate_function`: the function held in validator.py that will validate this specific field
+  - `colour`: colour to display as the field
+  - `options`: if the input is to choose an option, a list of integers are passed in
+
+1. **Input Prompt**:
+
+   - The user is prompted to enter a value for the specified `field`. The prompt includes an option to type 'menu' to return to the main menu.
+
+2. **Main Menu Navigation**:
+
+   - If the user types 'menu' (non case-insensitive), the function calls `main_menu()` to navigate back to the main menu.
+
+3. **Input Validation**:
+   - If `options` is provided (i.e., not empty), the `validate_function` is called with `user_input`, `options`, and `field` as arguments.
+   - If `options` is empty, the `validate_function` is called with only `user_input` and `field` as arguments.
+   - If the `validate_function` returns `True`, indicating valid input, the function returns `user_input`.
+   - If the input is invalid, the loop continues until the user provides valid input or chooses to return to the main menu.
+
+For example This will get the user to choose an option in the main menu:
+
+```python
+option = get_user_input("Option",valid.validate_option,BLUE,[1,2,3,4,5,6])
+```
+
+- `Option` is the field as the use is choosing an 'Option' to choose from
+- `valid.validate_option` is the valids object method to handle this specific input
+- `BLUE` is the colour to display this field as
+- `[1,2,3,4,5,6]` Menu options are passed in as this is a option type, so this is also passed into the validate function
+
+Another Example, user is needs to input a Email Address
+
+```python
+email = get_user_input("Email Address",valid.validate_email,EMAIL_COLOUR)
+```
+
+- `Email Address` is the field as the use is inputting a Email
+- `valid.validate_email` is the valids object method to handle this specific input
+- `EMAIL_COLOUR` is the colour to display this field as
+- No List of integers were passed in so the when calling the validate function it does not include `options = []` as its an empty list
+
+Below is the function in validator.py that will validate the input for menu options:
+
+```python
+def validate_option(self,user_option,all_options,field):
+        try:
+            if int(user_option) in all_options:
+                return True
+            else:
+                self.print_to_terminal(field,f"be {all_options}")
+                return False
+        except:
+            self.print_to_terminal(field,"be a number")
+            return False
+```
+
+- function `print_to_terminal()` just takes in error reasons and displays them to user in a reusable format.
+
 ### See All Data
 
+```python
+def see_all_data():
+    clear_terminal()
+    print(f"\n\n                   {GREEN}Getting all Profiles....\n")
+    print_profile_table(gsheet.get_all_profile_data())
+    print(f"{WHITE}To show the history of a customer:\n")
+    Id = get_user_input_id()
+    print(f"{GREEN}           Getting {ID_COLOUR}{Id}{GREEN}'s history data....")
+    print_history_table(gsheet.get_history_data(int(Id)))
+    return_to_main_menu_prompt()
+```
+
+- Clears terminal.
+- Retrieves all data in Profiles sheet and displays in a colour coded and organised table.
+- Then user enters a ID to see its history data in a organised table, the fucntion `get_user_input_id()` essentially uses the function we used for inputs before but also checks if the given ID exists in the database.
+- `return_to_main_menu_prompt()` just displays to user "Pres any key to return to menu", to which after a key is pressed it calls `main_menu()` to load the main menu again
+
+### Create a Profile
+
+```python
+def create_a_profile():
+    clear_terminal()
+    firstname = get_user_input("First Name",valid.validate_name,FNAME_COLOUR)
+    lastname = get_user_input("last Name",valid.validate_name,LNAME_COLOUR)
+    email = get_user_input("Email Address",valid.validate_email,EMAIL_COLOUR)
+    phone = get_user_input("Phone Number",valid.validate_phone,PHONE_COLOUR)
+    dob = get_user_input("Date of Birth",valid.validate_dob,DOB_COLOUR)
+
+    Id = len(gsheet.get_all_profile_data())
+
+    new_row = [str(Id),firstname,lastname,email,str(phone),dob]
+    print_preview_profile(new_row)
+    gsheet.add_new_profile(new_row,Id,valid.get_todays_date())
+    print(f"\n{GREEN}         New Pofile succesfully added to database")
+    return_to_main_menu_prompt()
+```
+
+- Clears terminal
+- 5 fields need to be input by user, passing `get_user_input()` its respective field name, validating function and colour to display the firld as. Below are the requirments to pass validation for each field:
+  - First/Last Name: Only letters, at least 2 characters long
+  - Email Address: Regex pattern of `'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'`
+  - Phone Number: Regex pattern of `'^447\d{9}$'`
+  - Date of Birth: Regex pattern of `'^[0-9]{2}/[0-9]{2}/[0-9]{4}$'`, a real date and has to be before today.
+- Then an ID is created by getting the current amount of profiles in the .
+- Shows a preview of the new profile in a table with its data using `print_preview_profile()` passing in a list the profiles data.
+- Then using a function in sheets.py `add_new_profile()` which handles updating the sheets to add the new profile.
+- return to main menu prompt
+
+### Edit a Profile
+
+```python
+def edit_a_profile():
+
+    clear_terminal()
+    search_for_a_profile()
+    Id = int(get_user_input_id())
+    data = gsheet.get_all_profile_data()[Id]
+
+    clear_terminal()
+
+    confirm_changes = False
+
+    while not confirm_changes:
+
+        print_preview_profile(data)
+
+        print(f"{WHITE}Now choose wahat field to change (example: 2) >\n")
+        print(f"                {RED}1{WHITE} -> {FNAME_COLOUR}firstname")
+        print(f"                {RED}2{WHITE} -> {LNAME_COLOUR}lastname")
+        print(f"                {RED}3{WHITE} -> {EMAIL_COLOUR}email")
+        print(f"                {RED}4{WHITE} -> {PHONE_COLOUR}phone number")
+        print(f"                {RED}5{WHITE} -> {DOB_COLOUR}date of birth")
+        print(f"                {RED}6{WHITE} -> {ID_COLOUR}CONFIRM AND SET CHANGES")
+
+        option = int(get_user_input("Option",valid.validate_option,BLUE,[1,2,3,4,5,6]))
+
+        if option == 1:
+            fname = get_user_input("Name",valid.validate_name,FNAME_COLOUR)
+            data[1] = fname
+        elif option == 2:
+            lname = get_user_input("Name",valid.validate_name,LNAME_COLOUR)
+            data[2] = lname
+        elif option == 3:
+            email = get_user_input("Email Address",valid.validate_email,EMAIL_COLOUR)
+            data[3] = email
+        elif option == 4:
+            phone = get_user_input("Phone Number",valid.validate_phone,PHONE_COLOUR)
+            data[4] = phone
+        elif option == 5:
+            dob = get_user_input("Date Of Birth",valid.validate_dob,DOB_COLOUR)
+            data[5] = dob
+        elif option == 6:
+            confirm_changes = True
+
+    clear_terminal()
+    print_preview_profile(data)
+    gsheet.update_profile(data)
+    print(f"{GREEN} Profile updated")
+    return_to_main_menu_prompt()
+```
+
+- Clears terminal.
+- `search_for_a_profile()` is function where it takes a user inputed search criteria, searches through every item in profiles sheet to find matching profiles, then displays which profiles were found in a preview table.
+- User inputs the ID they would like to select using the same `get_user_input_id()` function.
+- `data` variable is a list containing the selected profiles data, this would then be updated and validated in a loop untill the user has chosen to set changes which will break the while loop.
+- When while loop is broken, previews final `data` list one last time to user, then uses a function in sheets.py `update_profile(data)` which takes in a list of the new profiles data, this function handles updating the apropriate profile with its new fields.
+- return to main menu prompt.
+
+### Log A Visit
+
+```python
+def log_a_visit():
+    clear_terminal()
+    search_for_a_profile()
+    Id = int(get_user_input_id())
+    data = gsheet.get_history_data(Id)
+
+    if not is_user_active(data[4]):
+        print(f"{RED}User is not subscribed{RESET_COLOUR}")
+    elif check_user_logged_today(data[3]):
+        print(f"{RED}User has already logged today{RESET_COLOUR}")
+    else:
+        gsheet.add_visit(valid.get_todays_date(),Id,data[3])
+        print(f"{GREEN}        Logged Users Visit{RESET_COLOUR}")
+
+    return_to_main_menu_prompt()
+```
+
+- Clears terminal.
+- Searches and selects a profile by the user entering a search field and ID, the same way as shown above.
+- Then 2 conditions are checked, if either are met then an error message is shown respective to the condition met:
+  - `is_user_active()` takes in the users enddate, this function checks if the enddate is not before today.
+  - `check_user_logged_today()` takes in the users visit entrys, this fucntion checks if the user has logged in today already.
+- If both conditions are not met, `get_todays_date()` function in sheets.py is used ti handle updating the apropriate profiles visits entrys to add todays entry.
+- return to menu prompt
+
+### Make a Payment
+
+```python
+def make_a_payment():
+    clear_terminal()
+    search_for_a_profile()
+    Id = int(get_user_input_id())
+    data = gsheet.get_history_data(Id)
+
+    print(f"{WHITE}Now choose how many months to add (example: 3) >")
+    print(f"                {YELLOW}1{WHITE} Month -> £{PAYMENT_AMOUNT_1MONTH}")
+    print(f"                {YELLOW}3{WHITE} Month -> £{PAYMENT_AMOUNT_3MONTH}")
+    print(f"                {YELLOW}6{WHITE} Month -> £{PAYMENT_AMOUNT_6MONTH}")
+    print(f"                {YELLOW}9{WHITE} Month -> £{PAYMENT_AMOUNT_9MONTH}")
+    print(f"                {YELLOW}12{WHITE} Month -> £{PAYMENT_AMOUNT_12MONTH}")
+
+    months = int(get_user_input("Option",valid.validate_option,YELLOW,[1,3,6,9,12]))
+
+    payment_amount = None
+
+    if months == 1:
+        payment_amount = PAYMENT_AMOUNT_1MONTH
+    elif months == 3:
+        payment_amount = PAYMENT_AMOUNT_3MONTH
+    elif months == 6:
+        payment_amount = PAYMENT_AMOUNT_6MONTH
+    elif months == 9:
+        payment_amount = PAYMENT_AMOUNT_9MONTH
+    elif months == 12:
+        payment_amount = PAYMENT_AMOUNT_12MONTH
+
+    old_enddate = data[4]
+    new_enddate = calculate_new_enddate(old_enddate,months)
+    gsheet.add_payment(payment_amount,valid.get_todays_date(),new_enddate,Id,data[2])
+    print(f"{GREEN} Payment Made")
+    return_to_main_menu_prompt()
+```
+
+- Clears terminal.
+- Searches and selects a profile by the user entering a search field and ID, the same way as shown above.
+- User is presented with 5 different options, to select the package for the payment being made.
+- using `get_user_input()` and also passing a list of options in, user will ener in a option which untill validated, will intilize a variable `payment_amount` and asign it to the respective global variable comtaing the payments price.
+- A new enddate is calculated with a function `calculate_new_enddate()` which will take in the current enddate and months to be added, to then return a real life and valid date in the form DD/MM/YYYY.
+- `add_payment()` function in sheets.py is used to handle adding the payment entry to the apropriate profile in historys sheet.
+- return to menu prompt.
+
+### Delete a Profile
+
+```python
+def delete_a_profile():
+    clear_terminal()
+    search_for_a_profile()
+    Id = int(get_user_input_id())
+    data = gsheet.get_all_profile_data()[Id]
+
+    print_preview_profile(data)
+    print_history_table(gsheet.get_history_data(Id))
+
+    print(f"{WHITE}Are you sure you would like to delete this profile and its history data {RED}PERMANTLY{WHITE}, enter '{YELLOW}confirm'{WHITE} to delete this profile")
+    confirmation = get_user_input("Confirmation",valid.validate_confirmation,YELLOW)
+    gsheet.delete_row_at_id(Id)
+    print(f"{GREEN}Profile and its history deleted")
+    return_to_main_menu_prompt()
+```
+
+- Clears terminal.
+- Searches and selects a profile by the user entering a search field and ID, the same way as shown above.
+- Previews the profiles data from both sheets (profiles and history)in 2 respective tables.
+- User must enter 'confirm' to console in any case to make sure they would like to delete this certain customers data from both sheets.
+- Once conformed, `delete_row_at_id()` function in sheets.py is used to handle the removal of all that customers data, and also reasgining all customers ID numbers to make sure they are back in order after a customer deletion.
+- return to main menu prompt.
+
+## Technologies Used
+
+- Python: All backend logic. Below are the libaries used and its justification:
+  - gspread / google.oauth2.service_account / Credentials: All used to esatblish and use the API to/from Google Sheets.
+  - os: To determine how to clear the terminal for different operating systems as they are slightly different to do.
+  - re: Regex patterns in strings
+  - datetime: Obtaining todays date.
+- Git: Version control
+- GitHub: Store repository online with change logs for other people to see.
+- GitPod / VSCode: Envoronment in which this was built in.
+- Heroku: Used to deploy the website online for other people to use.
+
+## Testing
 
 
+
+## Deployment
+
+## Credits
 
