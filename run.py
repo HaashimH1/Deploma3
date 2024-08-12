@@ -75,7 +75,7 @@ def main_menu():
     print(f"   {BLUE}1 {WHITE}--> See all Data    {BLUE}2 {WHITE}--> "
           f"Create a Profile  {BLUE}3 {WHITE}--> Edit a Profile\n")
     print(f"   {BLUE}4 {WHITE}--> Log a Visit     {BLUE}5 {WHITE}--> "
-          f"Make a Payment  {BLUE}6 {WHITE}--> Delete a Profile\n")
+          f"Make a Payment    {BLUE}6 {WHITE}--> Delete a Profile\n")
 
     option = get_user_input("Option", valid.validate_option,
                             BLUE, [1, 2, 3, 4, 5, 6])
@@ -275,8 +275,8 @@ def delete_a_profile():
     print_history_table(gsheet.get_history_data(Id))
 
     print(f"{WHITE}Are you sure you would like to delete this profile and its "
-          f"history data {RED}PERMANENTLY{WHITE}, enter '{YELLOW}confirm'"
-          f"{WHITE}to delete this profile")
+          f"history data\n{RED}PERMANENTLY{WHITE}, enter '{YELLOW}confirm'"
+          f"{WHITE} to delete this profile")
     confirmation = get_user_input("Confirmation", valid.validate_confirmation,
                                   YELLOW)
     gsheet.delete_row_at_id(Id)

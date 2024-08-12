@@ -579,7 +579,22 @@ def delete_a_profile():
 - Heroku: Used to deploy the website online for other people to use.
 
 ## Testing
+### CI Python Linter Validation (PEP8)
+Link to the exact linter used can be found [here](https://pep8ci.herokuapp.com/#)
+run.py
+- ![python linter checks for run.oy](/README_assets/doc_17.png)
+- Errors are from the ASCII 'GYM face' logo.
+- Apart from this, no errors.
 
+sheets.py
+- ![python linter checks for run.oy](/README_assets/doc_18.png)
+- No errors
+
+validator.py
+- ![python linter checks for run.oy](/README_assets/doc_19.png)
+- No Errors
+
+### Manual Testing
 
 
 ## Deployment
