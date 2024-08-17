@@ -6,8 +6,6 @@ Live website can be found [Here](https://deploma3-62c85e28efa9.herokuapp.com/)
 
 ## Table of Contents
 
-## Table of Contents
-
 - [Gym face](#gym-face)
 - [User Expectations](#user-expectations)
 - [Google Sheets](#google-sheets)
@@ -39,6 +37,7 @@ Live website can be found [Here](https://deploma3-62c85e28efa9.herokuapp.com/)
   - [GitHub Repository Setup](#github-repository-setup)
   - [Deployment to Heroku](#deployment-to-heroku)
 - [Credits](#credits)
+
 
 ## User Expectations
 
@@ -75,6 +74,8 @@ Below are snippets of what the sheets look like:
 - ![dfgdf](/README_assets/doc_15.png)
 
 ## Program / Features Walkthrough
+
+** NOTE ** - Any use of the return to menu prompt 'Press ANY KEY' has been changed to 'Press ENTER' to better represent its actual functionality. 
 
 Whole program is contained in a terminal window, 80 x 24 characters wide and long.
 
@@ -706,7 +707,7 @@ validator.py
 ## Credits
 
 - 'GYM face' ASCII logo made from the website [Patorjk](https://patorjk.com/software/taag/)
-- Use of ANSI colour codes to display different coloured text to terminal was suggested by [Chat GPT](https://openai.com/index/chatgpt/)
+- Use of ANSI colour codes to display different coloured text to terminal was suggested and inspired by [Chat GPT](https://openai.com/index/chatgpt/)
 - Regex pattern matching was inspired by program examples on [Stack Overflow](https://stackoverflow.com/)
 - Program features was inspired by p-harting's [Console CRM](https://github.com/p-harting/console-crm)
 - Google Sheets API settup and functionality, and feedback from my mentor Akshat Garg from [Code Institute](https://codeinstitute.net/)

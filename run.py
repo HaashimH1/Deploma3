@@ -423,7 +423,7 @@ def return_to_main_menu_prompt():
     """
     Prompt to hit any key to return to main menu
     """
-    input(f"{WHITE}Press {BLUE}ANY KEY{WHITE} to return to Main Menu{BLACK}\n")
+    input(f"{WHITE}Press {BLUE}ENTER{WHITE} to return to Main Menu{BLACK}\n")
     main_menu()
 
 
