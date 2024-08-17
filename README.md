@@ -75,7 +75,7 @@ Below are snippets of what the sheets look like:
 
 ## Program / Features Walkthrough
 
-** NOTE ** - Any use of the return to menu prompt 'Press ANY KEY' has been changed to 'Press ENTER' to better represent its actual functionality. 
+`** NOTE ** - Any use of the return to menu prompt 'Press ANY KEY' has been changed to 'Press ENTER' to better represent its actual functionality` 
 
 Whole program is contained in a terminal window, 80 x 24 characters wide and long.
 
