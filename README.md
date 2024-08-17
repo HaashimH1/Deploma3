@@ -6,7 +6,39 @@ Live website can be found [Here](https://deploma3-62c85e28efa9.herokuapp.com/)
 
 ## Table of Contents
 
-placeholder
+## Table of Contents
+
+- [Gym face](#gym-face)
+- [User Expectations](#user-expectations)
+- [Google Sheets](#google-sheets)
+- [Program / Features Walkthrough](#program--features-walkthrough)
+  - [Program Start](#program-start)
+  - [Main Menu](#main-menu)
+  - [Option 1: See all Data](#option-1-see-all-data)
+  - [Option 2: Create a Profile](#option-2-create-a-profile)
+  - [Option 3: Edit a Profile](#option-3-edit-a-profile)
+  - [Option 4: Log a Visit](#option-4-log-a-visit)
+  - [Option 5: Make a Payment](#option-5-make-a-payment)
+  - [Option 6: Delete a Profile](#option-6-delete-a-profile)
+- [Implementation](#implementation)
+  - [File/Class Structure](#fileclass-structure)
+  - [Settup](#settup)
+  - [Menu](#menu)
+  - [See All Data](#see-all-data)
+  - [Create a Profile](#create-a-profile)
+  - [Edit a Profile](#edit-a-profile)
+  - [Log A Visit](#log-a-visit)
+  - [Make a Payment](#make-a-payment)
+  - [Delete a Profile](#delete-a-profile)
+- [Technologies Used](#technologies-used)
+- [Testing](#testing)
+  - [CI Python Linter Validation (PEP8)](#ci-python-linter-validation-pep8)
+  - [Testing](#testing-1)
+- [Deployment](#deployment)
+  - [Google Sheets Setup](#google-sheets-setup)
+  - [GitHub Repository Setup](#github-repository-setup)
+  - [Deployment to Heroku](#deployment-to-heroku)
+- [Credits](#credits)
 
 ## User Expectations
 
@@ -579,25 +611,102 @@ def delete_a_profile():
 - Heroku: Used to deploy the website online for other people to use.
 
 ## Testing
+
 ### CI Python Linter Validation (PEP8)
+
 Link to the exact linter used can be found [here](https://pep8ci.herokuapp.com/#)
 run.py
+
 - ![python linter checks for run.oy](/README_assets/doc_17.png)
 - Errors are from the ASCII 'GYM face' logo.
 - Apart from this, no errors.
 
 sheets.py
+
 - ![python linter checks for run.oy](/README_assets/doc_18.png)
 - No errors
 
 validator.py
+
 - ![python linter checks for run.oy](/README_assets/doc_19.png)
 - No Errors
 
-### Manual Testing
+### Testing
 
+| **Screen**           | **Feature**                   | **Expectation**                                                                                                                                           | **Result** |
+| -------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| **General**          | Terminal Setup                | Objects are created, establish API connection, attributes assigned to certain objects.                                                                    | **PASS**   |
+|                      | Return to Menu Prompt         | User presses enter to return to menu, clearing the terminal, then displaying the main menu.                                                               | **PASS**   |
+|                      | Searching for a Profile       | Searches for a profile based on input criteria and displays matching profiles.                                                                            | **PASS**   |
+|                      | Selecting Profile by ID       | Validates ID input and retrieves the correct profile for editing.                                                                                         | **PASS**   |
+| **Main Menu**        | Entering Menu Option          | Value entered has to be a numbered option and changes screen according to the option chosen; otherwise, it throws an error and displays an error message. | **PASS**   |
+| **See All Data**     | Displaying Profiles           | Displays all profiles in an organized, color-coded table.                                                                                                 | **PASS**   |
+| **Create A Profile** | Entering First Name           | Validates name (only letters, at least 2 characters), then stores the input.                                                                              | **PASS**   |
+|                      | Entering Last Name            | Validates name (only letters, at least 2 characters), then stores the input.                                                                              | **PASS**   |
+|                      | Entering Email Address        | Validates email format, then stores the input.                                                                                                            | **PASS**   |
+|                      | Entering Phone Number         | Validates UK phone number format, then stores the input.                                                                                                  | **PASS**   |
+|                      | Entering Date of Birth        | Validates date format (DD/MM/YYYY) and ensures it's a valid date before today.                                                                            | **PASS**   |
+|                      | Finalizing Profile Creation   | Displays profile preview, adds profile to the database, and returns to the main menu.                                                                     | **PASS**   |
+| **Edit A Profile**   | Editing Profile Fields        | Allows editing of first name, last name, email, phone number, or date of birth.                                                                           | **PASS**   |
+|                      | Confirming and Saving Changes | Updates the profile in the database with new values and returns to the main menu.                                                                         | **PASS**   |
+| **Log A Visit**      | Checking Subscription Status  | Verifies if the user has an active subscription and has not already logged today.                                                                         | **PASS**   |
+|                      | Logging a Visit               | Adds today's date to the visit history if conditions are met.                                                                                             | **PASS**   |
+| **Make a Payment**   | Choosing Subscription Package | Allows selection of subscription package, updates payment entries, and extends the subscription.                                                          | **PASS**   |
+| **Delete A Profile** | Confirming Deletion           | Requires typing "confirm" to permanently delete the profile from the database.                                                                            | **PASS**   |
 
 ## Deployment
 
+### Google Sheets Setup
+
+1. **Sign in to Google**:
+
+   - Log into your Google account.
+
+2. **Create a Spreadsheet**:
+
+   - Open [Google Sheets](https://sheets.google.com) and start a new spreadsheet.
+
+3. **Enable Google Sheets API**:
+
+   - Visit the [Google API Library](https://console.developers.google.com), create a new project, and enable the "Google Sheets API".
+
+4. **Create Service Account**:
+
+   - In the "Credentials" tab, create a new service account, provide necessary details, and generate a JSON key file. Keep this file secure.
+
+5. **Share Spreadsheet**:
+   - Share your Google Sheets file with the service account using the email found in the JSON file.
+
+### GitHub Repository Setup
+
+1. **Fork and Clone Repository**:
+
+   - Fork the repository on GitHub and clone it locally using the URL provided.
+
+2. **Set Up Local Environment**:
+
+   - Ensure your `creds.json` file is added to `.gitignore` to avoid exposing credentials.
+
+3. **Install Dependencies**:
+   - Run `pip install -r requirements.txt` to install required libraries.
+
+### Deployment to Heroku
+
+1. **Prepare Dependencies**:
+
+   - Run `pip3 freeze > requirements.txt` to set dependencies. Include any additional libraries manually.
+
+2. **Create Heroku App**:
+
+   - Create a new app on Heroku, add necessary config vars (`CREDS` and `PORT`), and set buildpacks for Python and Node.js.
+
+3. **Deploy**:
+   - Connect your GitHub repository to Heroku, and deploy the app by selecting the appropriate branch.
+
 ## Credits
 
+- 'GYM face' ASCII logo made from the website [Patorjk](https://patorjk.com/software/taag/)
+- Use of ANSI colour codes to display different coloured text to terminal was suggested by [Chat GPT](https://openai.com/index/chatgpt/)
+- Regex pattern matching was inspired by program examples on [Stack Overflow](https://stackoverflow.com/)
+- Program features was inspired by p-harting's [Console CRM](https://github.com/p-harting/console-crm)
+- Google Sheets API settup and functionality, and feedback from my mentor Akshat Garg from [Code Institute](https://codeinstitute.net/)
